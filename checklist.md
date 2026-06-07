@@ -36,3 +36,11 @@
 - [ ] Kiểm thử độ tương thích responsive trên thiết bị di động cho Frontend
 - [ ] Tối ưu hóa tốc độ tải và caching truy vấn ChromaDB
 - [ ] Đồng bộ hóa trạng thái công việc với Jira Board và tạo Pull Request merge vào `main`
+## ⬛ Pha 7: Đánh giá tổng quan & Kết luận
+
+- [ ] Người đánh giá kết luận và so sánh giữa RAG và Fine-tuning (ưu/nhược điểm, hiệu năng, chi phí, trường hợp áp dụng)
+- [ ] Tổng hợp kết quả benchmark từ các chiến lược chunking và embedding đã thử nghiệm
+- [ ] Phân tích sai số và hạn chế của hệ thống (hallucination, out-of-context, latency cao)
+- [ ] Đề xuất hướng cải tiến và mở rộng hệ thống trong tương lai
+- [ ] Viết báo cáo tổng kết dự án (Introduction → Method → Results → Conclusion)
+- [ ] Chuẩn bị slide thuyết trình bảo vệ đồ án nhóm

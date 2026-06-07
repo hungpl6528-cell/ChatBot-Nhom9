@@ -121,13 +121,13 @@ Dựa trên `ERD.md`, các bảng cơ sở dữ liệu sẽ được khởi tạ
 
 ## 5. Kế Hoạch Phân Phối Công Việc & Checklist (`checklist.md`)
 Các nhiệm vụ sẽ được chia nhỏ và đưa vào [checklist.md](file:///c:/B%C3%81O%20C%C3%81O%20NH%C3%93M/ChatBot-Nhom9/ChatBot-Nhom9/checklist.md) để cập nhật liên tục:
-- **Pha 1: Khởi tạo Cơ sở dữ liệu và Cấu trúc dự án (BE & FE Structure)**
-- **Pha 2: Triển khai luồng RAG cơ bản ở Backend (FastAPI + ChromaDB + OpenAI)**
-- **Pha 3: Thiết lập các Use Case đánh giá và Benchmarking trên Backend**
-- **Pha 4: Thiết kế Giao diện người dùng trên Frontend (Next.js)**
-- **Pha 5: Kết nối API (BE-FE Integration) & Triển khai Dashboard trực quan hóa**
-- **Pha 6: Kiểm thử hiệu năng, tối ưu hóa và làm báo cáo cuối kỳ**
-
+- **Người 1: Khởi tạo Cơ sở dữ liệu và Cấu trúc dự án (BE & FE Structure)**
+- **Người 2: Triển khai luồng RAG cơ bản ở Backend (FastAPI + ChromaDB + OpenAI)**
+- **Người 3: Thiết lập các Use Case đánh giá và Benchmarking trên Backend**
+- **Người 4: Thiết kế Giao diện người dùng trên Frontend (Next.js)**
+- **Người 5: Kết nối API (BE-FE Integration) & Triển khai Dashboard trực quan hóa**
+- **Người 6: Kiểm thử hiệu năng, tối ưu hóa và làm báo cáo cuối kỳ**
+- **Người 7: Kết Luận , đánh giá và so sánh giữa RAG và fine-tunning**
 ---
 
 ## 6. Quy Tắc Quản Lý Dự Án & Git
