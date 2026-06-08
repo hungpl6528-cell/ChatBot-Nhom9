@@ -199,7 +199,7 @@
 - [ ] Xử lý các edge case (file lỗi, câu hỏi ngoài tài liệu...)
 
 ### Báo Cáo
-- [ ] Viết README.md đầy đủ cho repo
+- [ ] Soạn thảo chi tiết nội dung bài tập lớn trên latex
 - [ ] Viết báo cáo thực nghiệm so sánh models
 - [ ] Lập bảng số liệu RAGAS benchmark
 - [ ] Vẽ biểu đồ so sánh kết quả
@@ -229,7 +229,7 @@
 - [ ] Trả lời RQ Phụ 1: Chunking strategy tốt nhất
 - [ ] Trả lời RQ Phụ 2: Embedding model phù hợp nhất
 - [ ] Viết kết luận và đề xuất hướng phát triển
-
+- [ ] Viết README.md đầy đủ cho repo
 ---
 
 ## 👑 Quản Lý Repo (PHAN LIÊN HƯNG / Chủ Repo)
