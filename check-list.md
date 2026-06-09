@@ -73,7 +73,7 @@
 
 ---
 
-## 👤 NINH DANH  — BE: Benchmark & API
+## 👤 DANH NINH  — BE: Benchmark & API
 
 ### Điều kiện
 - [ ] Người 1 đã merge `feature/be-domain` vào `develop`
