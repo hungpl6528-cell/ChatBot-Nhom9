@@ -1,0 +1,911 @@
+\documentclass[12pt,a4paper]{report}
+
+% =========================
+% Package
+% =========================
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{hyperref}
+
+\geometry{
+	left=3cm,
+	right=2cm,
+	top=2.5cm,
+	bottom=2.5cm
+}
+
+\onehalfspacing
+
+\begin{document}
+	
+	% =========================
+	% TRANG BÌA
+	% =========================
+	
+	\begin{titlepage}
+		\begin{center}
+			
+			\textbf{\Large TRƯỜNG ĐẠI HỌC GIAO THÔNG VẬN TẢI}
+			
+			\vspace{1cm}
+			
+			\textbf{\Large KHOA CÔNG NGHỆ THÔNG TIN}
+			
+			\vspace{2cm}
+			
+			{\Large BÁO CÁO ĐỒ ÁN / MÔN HỌC}
+			
+			\vspace{2cm}
+			
+			{\Huge \textbf{XÂY DỰNG CHATBOT CHO PHÉP SINH VIÊN HỎI ĐÁP DỰA TRÊN TÀI LIỆU MÔN HỌC, ĐỒNG THỜI NGHIÊN CỨU VÀ SO SÁNH HIỆU QUẢ GIỮA RAG VÀ FINE-TUNING TRONG BỐI CẢNH TIẾNG VIỆT}}
+			
+			\vfill
+			
+			\begin{flushleft}
+				Giảng viên hướng dẫn: Nguyễn Văn Chiến\
+				Sinh viên thực hiện: Đào Văn Khánh\
+				MSSV: 051206009944\
+				
+			\end{flushleft}
+			
+			\vfill
+			
+			Thành phố Hồ Chí Minh,ngày 30 tháng 5 năm 2026
+			
+		\end{center}
+	\end{titlepage}
+	
+	% =========================
+	% MỤC LỤC
+	% =========================
+	
+	\tableofcontents
+	\newpage
+	
+	% =========================
+	% CHƯƠNG 1
+	% =========================
+	
+	\chapter{Giới thiệu đề tài}
+	
+	\section{Lý do chọn đề tài}
+	
+	Trong thời đại chuyển đổi số, nhu cầu tiếp cận tri thức nhanh chóng và chính xác ngày càng trở nên quan trọng. Sinh viên thường gặp khó khăn trong việc tìm kiếm thông tin từ giáo trình, tài liệu bài giảng hoặc các nguồn học tập khác. Việc phải đọc toàn bộ tài liệu để tìm câu trả lời cho một câu hỏi cụ thể gây tốn thời gian và làm giảm hiệu quả học tập.
+	
+	Sự phát triển của Trí tuệ nhân tạo và các mô hình ngôn ngữ lớn mở ra khả năng xây dựng các hệ thống chatbot thông minh có khả năng hiểu và trả lời câu hỏi bằng ngôn ngữ tự nhiên. Đặc biệt, phương pháp Retrieval-Augmented Generation (RAG) và Fine-tuning đang được sử dụng rộng rãi trong các hệ thống hỏi đáp dựa trên tri thức chuyên ngành.
+	
+	Xuất phát từ những nhu cầu thực tiễn trên, đề tài được thực hiện nhằm xây dựng một chatbot hỗ trợ sinh viên học tập và nghiên cứu khả năng ứng dụng của RAG và Fine-tuning trong môi trường tiếng Việt.
+	
+	\section{Mục tiêu đề tài}
+	
+	\begin{itemize}
+		\item Xây dựng chatbot hỏi đáp tài liệu môn học.
+		\item Hỗ trợ tiếng Việt.
+		\item Nghiên cứu mô hình RAG.
+		\item Nghiên cứu Fine-tuning.
+		\item So sánh hiệu quả giữa hai phương pháp.
+	\end{itemize}
+	
+	\section{Phạm vi nghiên cứu}
+	
+	\begin{itemize}
+		\item Dữ liệu là giáo trình và tài liệu môn học.
+		\item Hệ thống hoạt động trên nền tảng web.
+		\item Tập trung vào tiếng Việt.
+		\item Không nghiên cứu xử lý giọng nói.
+	\end{itemize}
+	
+	\section{Cấu trúc báo cáo}
+	
+	Báo cáo gồm 5 chương:
+	
+	\begin{itemize}
+		\item Chương 1: Giới thiệu đề tài.
+		\item Chương 2: Cơ sở lý thuyết.
+		\item Chương 3: Phân tích và thiết kế hệ thống.
+		\item Chương 4: Kiến trúc hệ thống.
+		\item Chương 5: Kết luận và hướng phát triển.
+	\end{itemize}
+	
+	% =========================
+	% CHƯƠNG 2
+	% =========================
+	
+	\chapter{Cơ sở lý thuyết}
+	
+	\section{Tổng quan về Chatbot}
+	
+Chatbot là một chương trình máy tính được thiết kế nhằm mô phỏng cuộc trò chuyện giữa con người và máy tính thông qua ngôn ngữ tự nhiên. Mục tiêu của chatbot là hỗ trợ người dùng tìm kiếm thông tin, giải đáp thắc mắc hoặc thực hiện các tác vụ tự động mà không cần sự can thiệp trực tiếp của con người. Sự phát triển của trí tuệ nhân tạo, học máy và xử lý ngôn ngữ tự nhiên đã giúp chatbot ngày càng trở nên thông minh hơn, có khả năng hiểu ngữ cảnh và tạo ra các phản hồi tự nhiên tương tự như con người.
+
+Những chatbot đầu tiên chủ yếu hoạt động dựa trên các luật được định nghĩa sẵn. Các hệ thống này chỉ có thể phản hồi khi người dùng nhập đúng từ khóa hoặc đúng mẫu câu đã được lập trình trước. Mặc dù dễ triển khai nhưng chatbot dựa trên luật có khả năng xử lý ngôn ngữ hạn chế và khó thích nghi với các tình huống mới.
+
+Cùng với sự phát triển của học máy và học sâu, các chatbot hiện đại đã có khả năng học từ dữ liệu và hiểu được ý nghĩa của câu hỏi thay vì chỉ dựa vào từ khóa. Đặc biệt, sự xuất hiện của các mô hình ngôn ngữ lớn (Large Language Models - LLMs) như GPT, Gemini, Claude hay Llama đã tạo ra bước tiến vượt bậc trong lĩnh vực chatbot. Các mô hình này có khả năng hiểu ngữ cảnh, suy luận và tạo ra các phản hồi tự nhiên với chất lượng cao.
+
+Hiện nay chatbot được ứng dụng trong nhiều lĩnh vực khác nhau như:
+
+Giáo dục: hỗ trợ học tập, giải đáp câu hỏi và cung cấp tài liệu.
+Thương mại điện tử: tư vấn sản phẩm và hỗ trợ khách hàng.
+Y tế: cung cấp thông tin sức khỏe và hỗ trợ đặt lịch khám bệnh.
+Tài chính: hỗ trợ tra cứu thông tin giao dịch và tư vấn dịch vụ.
+Dịch vụ công: hướng dẫn thủ tục hành chính và cung cấp thông tin cho người dân.
+
+Trong lĩnh vực giáo dục, chatbot đóng vai trò như một trợ lý học tập thông minh giúp sinh viên tiếp cận kiến thức nhanh chóng và thuận tiện hơn. Thay vì phải tìm kiếm thủ công trong hàng trăm trang tài liệu, sinh viên chỉ cần đặt câu hỏi bằng ngôn ngữ tự nhiên và nhận được câu trả lời phù hợp. Điều này giúp tiết kiệm thời gian học tập và nâng cao hiệu quả tiếp thu kiến thức.
+
+Đối với đề tài này, chatbot được xây dựng với mục tiêu hỗ trợ sinh viên hỏi đáp dựa trên tài liệu môn học. Hệ thống không chỉ cung cấp câu trả lời mà còn sử dụng nội dung từ các tài liệu đã được cung cấp nhằm đảm bảo tính chính xác và độ tin cậy của thông tin.
+	
+	\section{Xử lý ngôn ngữ tự nhiên}
+	
+	Xử lý ngôn ngữ tự nhiên (Natural Language Processing - NLP) là một lĩnh vực thuộc trí tuệ nhân tạo (Artificial Intelligence - AI), tập trung vào việc nghiên cứu và phát triển các phương pháp giúp máy tính có thể hiểu, phân tích, xử lý và tạo ra ngôn ngữ của con người. NLP đóng vai trò là cầu nối giữa ngôn ngữ tự nhiên và hệ thống máy tính, cho phép con người giao tiếp với máy tính một cách tự nhiên hơn thông qua văn bản hoặc giọng nói.
+	
+	Trong các hệ thống chatbot hiện đại, NLP là thành phần cốt lõi giúp hệ thống hiểu được nội dung câu hỏi của người dùng, xác định ý định của câu hỏi và tạo ra câu trả lời phù hợp. Nếu không có NLP, chatbot chỉ có thể hoạt động dựa trên các từ khóa đơn giản và khó có khả năng hiểu được ngữ cảnh của cuộc hội thoại.
+	
+\textbf{2.2.1 Vai trò của NLP trong Chatbot}
+	
+	Đối với hệ thống chatbot hỏi đáp tài liệu môn học, NLP đảm nhận nhiều nhiệm vụ quan trọng như:
+	
+	\begin{itemize}
+		\item Tiếp nhận và phân tích câu hỏi của sinh viên.
+		\item Xác định ý định của người dùng.
+		\item Chuẩn hóa và làm sạch dữ liệu văn bản.
+		\item Trích xuất thông tin quan trọng từ câu hỏi.
+		\item Hỗ trợ truy xuất các tài liệu liên quan.
+		\item Tạo đầu vào phù hợp cho mô hình ngôn ngữ lớn.
+	\end{itemize}
+	
+	Nhờ NLP, chatbot có thể hiểu được nhiều cách diễn đạt khác nhau của cùng một câu hỏi và cung cấp câu trả lời chính xác hơn.
+	
+\textbf{2.2.2. Quy trình xử lý ngôn ngữ tự nhiên}
+	
+	\subsection{Quy trình xử lý ngôn ngữ tự nhiên}
+	
+	Một hệ thống NLP thường trải qua các bước xử lý sau:
+	
+	\subsubsection{Tiền xử lý dữ liệu (Text Preprocessing)}
+	
+	Đây là bước đầu tiên nhằm chuẩn hóa dữ liệu văn bản trước khi đưa vào mô hình học máy. Các thao tác phổ biến gồm:
+	
+	\begin{itemize}
+		\item Chuyển đổi chữ hoa thành chữ thường.
+		\item Loại bỏ ký tự đặc biệt.
+		\item Loại bỏ khoảng trắng thừa.
+		\item Chuẩn hóa dấu câu.
+	\end{itemize}
+	
+	\subsubsection{Tách từ (Tokenization)}
+	
+	Tokenization là quá trình chia văn bản thành các đơn vị nhỏ hơn gọi là token. Đối với tiếng Việt, việc tách từ đóng vai trò quan trọng vì nhiều từ được tạo thành từ nhiều âm tiết.
+	
+	Ví dụ:
+	
+	\begin{quote}
+		Công nghệ thông tin
+	\end{quote}
+	
+	sẽ được tách thành:
+	
+	\begin{quote}
+		\texttt{Công\_nghệ\_thông\_tin}
+	\end{quote}
+	
+	thay vì tách thành từng từ đơn lẻ.
+	
+	\subsubsection{Loại bỏ từ dừng (Stop Word Removal)}
+	
+	Các từ xuất hiện thường xuyên nhưng ít mang ý nghĩa như:
+	
+	\begin{itemize}
+		\item là
+		\item và
+		\item của
+		\item những
+		\item các
+	\end{itemize}
+	
+	có thể được loại bỏ nhằm giảm nhiễu dữ liệu.
+	
+	\subsubsection{Biểu diễn văn bản thành vector}
+	
+	Máy tính không thể xử lý trực tiếp văn bản nên cần chuyển đổi văn bản thành dạng số. Các kỹ thuật phổ biến gồm:
+	
+	\begin{itemize}
+		\item Bag of Words (BoW)
+		\item TF-IDF
+		\item Word2Vec
+		\item FastText
+		\item BERT Embedding
+	\end{itemize}
+	
+	\subsection{Thách thức trong xử lý ngôn ngữ tiếng Việt}
+	
+	Tiếng Việt có nhiều đặc điểm làm cho việc xử lý ngôn ngữ trở nên phức tạp hơn so với một số ngôn ngữ khác:
+	
+	\begin{itemize}
+		\item Từ ghép nhiều âm tiết.
+		\item Dấu thanh ảnh hưởng đến nghĩa của từ.
+		\item Hiện tượng từ đồng âm và đa nghĩa.
+		\item Nhiều cách diễn đạt khác nhau cho cùng một nội dung.
+		\item Sử dụng từ viết tắt hoặc từ lóng.
+	\end{itemize}
+	
+	Do đó, các hệ thống chatbot tiếng Việt cần áp dụng các mô hình NLP hiện đại để đạt được hiệu quả cao trong việc hiểu và xử lý ngôn ngữ.
+	
+	\subsection{Ứng dụng NLP trong đề tài}
+	
+	Trong đề tài xây dựng chatbot hỏi đáp dựa trên tài liệu môn học, NLP được sử dụng để xử lý câu hỏi của sinh viên trước khi đưa vào hệ thống RAG hoặc mô hình Fine-tuning. NLP giúp chuyển đổi câu hỏi thành dạng dữ liệu có thể hiểu được bởi mô hình ngôn ngữ lớn, đồng thời hỗ trợ truy xuất các tài liệu liên quan nhằm nâng cao độ chính xác của câu trả lời.
+	
+	Thông qua việc kết hợp NLP với các mô hình ngôn ngữ lớn và hệ thống truy xuất tài liệu, chatbot có khả năng hỗ trợ sinh viên tìm kiếm kiến thức nhanh chóng, chính xác và hiệu quả hơn so với các phương pháp tìm kiếm truyền thống.
+	
+	\section{Mô hình ngôn ngữ lớn}
+	
+	Mô hình ngôn ngữ lớn (Large Language Models -- LLMs) là các mô hình học sâu được huấn luyện trên một lượng dữ liệu văn bản khổng lồ nhằm học được cấu trúc ngôn ngữ, ngữ nghĩa và kiến thức từ dữ liệu. Các mô hình này có khả năng dự đoán từ tiếp theo trong một chuỗi văn bản, từ đó thực hiện được nhiều tác vụ khác nhau như trả lời câu hỏi, tóm tắt văn bản, dịch máy, phân tích nội dung và hỗ trợ hội thoại.
+	
+	Sự phát triển của LLM bắt nguồn từ các nghiên cứu về mạng nơ-ron nhân tạo và đặc biệt là kiến trúc Transformer được giới thiệu vào năm 2017. Transformer đã khắc phục được nhiều hạn chế của các mô hình trước đó như RNN và LSTM, cho phép xử lý dữ liệu song song và ghi nhớ ngữ cảnh dài hơn.
+	
+	Một thành phần quan trọng của Transformer là cơ chế Attention. Cơ chế này cho phép mô hình xác định những phần thông tin quan trọng trong câu để tập trung xử lý, từ đó cải thiện khả năng hiểu ngữ nghĩa và mối quan hệ giữa các từ trong văn bản.
+	
+	Hiện nay có nhiều mô hình ngôn ngữ lớn nổi tiếng như GPT, Gemini, Claude và Llama. Các mô hình này được ứng dụng rộng rãi trong nhiều lĩnh vực khác nhau và là nền tảng cho các hệ thống chatbot hiện đại.
+	
+	Trong đề tài này, mô hình ngôn ngữ lớn đóng vai trò là thành phần trung tâm của chatbot. Sau khi nhận được thông tin truy xuất từ tài liệu môn học, mô hình sẽ tổng hợp và tạo ra câu trả lời phù hợp cho sinh viên.
+	
+	\subsection{Ưu điểm của LLM}
+	
+	\begin{itemize}
+		\item Hiểu ngữ cảnh tốt.
+		\item Có khả năng hội thoại tự nhiên.
+		\item Hỗ trợ nhiều tác vụ khác nhau.
+		\item Có thể áp dụng cho nhiều lĩnh vực.
+	\end{itemize}
+	
+	\subsection{Hạn chế của LLM}
+	
+	\begin{itemize}
+		\item Chi phí tính toán cao.
+		\item Có thể sinh thông tin không chính xác.
+		\item Phụ thuộc vào dữ liệu huấn luyện.
+		\item Khó kiểm soát hoàn toàn nội dung sinh ra.
+	\end{itemize}
+	\section{Retrieval-Augmented Generation}
+	
+	Retrieval-Augmented Generation (RAG) là phương pháp kết hợp giữa truy xuất thông tin và sinh ngôn ngữ nhằm nâng cao chất lượng câu trả lời của các mô hình ngôn ngữ lớn. Thay vì chỉ dựa vào kiến thức đã được học trong quá trình huấn luyện, mô hình có thể truy xuất thông tin từ một nguồn dữ liệu bên ngoài trước khi sinh phản hồi.
+	
+	\subsection{Kiến trúc của RAG}
+	
+	Kiến trúc RAG thường bao gồm hai thành phần chính:
+	
+	\begin{itemize}
+		\item Retriever (Bộ truy xuất thông tin).
+		\item Generator (Bộ sinh câu trả lời).
+	\end{itemize}
+	
+	\subsection{Quy trình hoạt động của RAG}
+	
+	Quy trình hoạt động của RAG diễn ra như sau:
+	
+	\begin{enumerate}
+		\item Người dùng nhập câu hỏi.
+		\item Câu hỏi được chuyển thành vector thông qua mô hình Embedding.
+		\item Hệ thống tìm kiếm các tài liệu liên quan trong Vector Database.
+		\item Các đoạn tài liệu phù hợp được gửi cùng câu hỏi đến mô hình ngôn ngữ.
+		\item Mô hình sinh ra câu trả lời dựa trên dữ liệu truy xuất được.
+	\end{enumerate}
+	
+	Ưu điểm lớn nhất của RAG là khả năng cập nhật tri thức dễ dàng. Khi có tài liệu mới, hệ thống chỉ cần bổ sung dữ liệu vào kho tri thức mà không cần huấn luyện lại mô hình.
+	
+	Trong đề tài này, RAG được sử dụng để xây dựng chatbot hỗ trợ sinh viên hỏi đáp dựa trên giáo trình và tài liệu môn học. Nhờ đó hệ thống có thể cung cấp các câu trả lời chính xác hơn và giảm hiện tượng sinh thông tin sai lệch.
+	
+	\subsection{Ưu điểm của RAG}
+	
+	\begin{itemize}
+		\item Dễ cập nhật dữ liệu.
+		\item Không cần huấn luyện lại mô hình.
+		\item Giảm hiện tượng Hallucination.
+		\item Tiết kiệm chi phí triển khai.
+	\end{itemize}
+	
+	\subsection{Nhược điểm của RAG}
+	
+	\begin{itemize}
+		\item Phụ thuộc vào chất lượng truy xuất.
+		\item Cần thêm hệ thống lưu trữ vector.
+		\item Thời gian phản hồi có thể cao hơn.
+	\end{itemize}
+	
+	\section{Fine-tuning}
+	
+	Fine-tuning là quá trình huấn luyện bổ sung một mô hình ngôn ngữ đã được huấn luyện trước trên một tập dữ liệu chuyên biệt nhằm thích nghi với một nhiệm vụ hoặc lĩnh vực cụ thể.
+	
+	Mục tiêu của Fine-tuning là giúp mô hình học thêm kiến thức chuyên ngành và cải thiện độ chính xác trên tập dữ liệu mong muốn.
+	
+	\subsection{Quy trình Fine-tuning}
+	
+	\begin{enumerate}
+		\item Thu thập dữ liệu.
+		\item Tiền xử lý dữ liệu.
+		\item Huấn luyện mô hình.
+		\item Đánh giá mô hình.
+	\end{enumerate}
+	
+	\subsubsection{Thu thập dữ liệu}
+	
+	Dữ liệu huấn luyện được xây dựng từ giáo trình, bài giảng, câu hỏi thường gặp và các tài liệu liên quan đến môn học.
+	
+	\subsubsection{Tiền xử lý dữ liệu}
+	
+	Dữ liệu được làm sạch, chuẩn hóa và chuyển đổi sang định dạng phù hợp với mô hình.
+	
+	\subsubsection{Huấn luyện mô hình}
+	
+	Mô hình nền được huấn luyện tiếp trên dữ liệu chuyên ngành để học các đặc trưng của lĩnh vực.
+	
+	\subsubsection{Đánh giá mô hình}
+	
+	Sau khi huấn luyện, mô hình được đánh giá dựa trên các tiêu chí như độ chính xác, độ liên quan và chất lượng câu trả lời.
+	
+	\subsection{Các phương pháp Fine-tuning}
+	
+	Fine-tuning có thể thực hiện theo nhiều cách khác nhau như:
+	
+	\begin{itemize}
+		\item Full Fine-tuning.
+		\item Parameter Efficient Fine-tuning (PEFT).
+		\item LoRA (Low-Rank Adaptation).
+	\end{itemize}
+	
+	Trong đó LoRA là phương pháp được sử dụng phổ biến hiện nay vì giúp giảm đáng kể chi phí huấn luyện.
+	
+	\subsection{Ưu điểm của Fine-tuning}
+	
+	\begin{itemize}
+		\item Độ chính xác cao trong lĩnh vực chuyên biệt.
+		\item Không phụ thuộc vào hệ thống truy xuất.
+		\item Tốc độ suy luận nhanh.
+	\end{itemize}
+	
+	\subsection{Nhược điểm của Fine-tuning}
+	
+	\begin{itemize}
+		\item Chi phí huấn luyện lớn.
+		\item Khó cập nhật dữ liệu mới.
+		\item Yêu cầu tài nguyên phần cứng mạnh.
+	\end{itemize}
+	
+	\section{Vector Database}
+	
+	Vector Database là hệ thống cơ sở dữ liệu được thiết kế để lưu trữ và tìm kiếm các vector biểu diễn dữ liệu. Trong các hệ thống AI hiện đại, đặc biệt là RAG, Vector Database đóng vai trò rất quan trọng.
+	
+	Khi tài liệu được đưa vào hệ thống, nội dung sẽ được chia thành nhiều đoạn nhỏ và chuyển thành vector bằng mô hình Embedding. Các vector này sau đó được lưu trữ trong Vector Database.
+	
+	Khi người dùng đặt câu hỏi, hệ thống sẽ:
+	
+	\begin{itemize}
+		\item Chuyển câu hỏi thành vector.
+		\item So sánh với các vector trong cơ sở dữ liệu.
+		\item Tìm các tài liệu có độ tương đồng cao nhất.
+		\item Trả về các kết quả phù hợp.
+	\end{itemize}
+	
+	\subsection{Các phương pháp đo độ tương đồng}
+	
+	Một số phương pháp đo độ tương đồng phổ biến:
+	
+	\begin{itemize}
+		\item Cosine Similarity.
+		\item Euclidean Distance.
+		\item Dot Product.
+	\end{itemize}
+	
+	\subsection{Các Vector Database phổ biến}
+	
+	\begin{itemize}
+		\item FAISS.
+		\item ChromaDB.
+		\item Pinecone.
+		\item Weaviate.
+		\item Milvus.
+	\end{itemize}
+	
+	Trong đề tài này, Vector Database được sử dụng để lưu trữ embedding của các tài liệu môn học và hỗ trợ quá trình truy xuất thông tin cho mô hình RAG.
+	
+	\section{Embedding}
+	
+	Embedding là kỹ thuật chuyển đổi dữ liệu văn bản thành các vector số trong không gian nhiều chiều. Các vector này biểu diễn ngữ nghĩa của văn bản sao cho những câu hoặc đoạn văn có nội dung tương tự sẽ nằm gần nhau trong không gian vector.
+	
+	Embedding là nền tảng của các hệ thống tìm kiếm ngữ nghĩa hiện đại. Thay vì tìm kiếm dựa trên từ khóa đơn thuần, hệ thống có thể hiểu được ý nghĩa của câu hỏi và nội dung tài liệu.
+	
+	\subsection{Ví dụ về Embedding}
+	
+	Ví dụ:
+	
+	\begin{quote}
+		Chatbot hoạt động như thế nào?
+	\end{quote}
+	
+	và:
+	
+	\begin{quote}
+		Nguyên lý hoạt động của chatbot là gì?
+	\end{quote}
+	
+	Mặc dù khác nhau về mặt từ ngữ nhưng có ý nghĩa tương tự. Sau khi được chuyển thành embedding, hai câu này sẽ có khoảng cách vector rất gần nhau.
+	
+	\subsection{Các mô hình Embedding phổ biến}
+	
+	\begin{itemize}
+		\item Word2Vec.
+		\item GloVe.
+		\item FastText.
+		\item BERT Embedding.
+		\item Sentence Transformer.
+	\end{itemize}
+	
+	\subsection{Vai trò của Embedding trong RAG}
+	
+	Trong hệ thống RAG, Embedding được sử dụng ở hai giai đoạn:
+	
+	\begin{itemize}
+		\item Chuyển đổi tài liệu môn học thành vector để lưu trữ trong Vector Database.
+		\item Chuyển đổi câu hỏi của người dùng thành vector để thực hiện tìm kiếm ngữ nghĩa.
+	\end{itemize}
+	
+	Chất lượng của Embedding ảnh hưởng trực tiếp đến hiệu quả truy xuất tài liệu và độ chính xác của chatbot. Vì vậy việc lựa chọn mô hình Embedding phù hợp đóng vai trò quan trọng trong quá trình xây dựng hệ thống.
+	\begin{table}[H]
+		\centering
+		\caption{So sánh RAG và Fine-tuning}
+		\begin{tabular}{|p{4cm}|p{5cm}|p{5cm}|}
+			\hline
+			Tiêu chí & RAG & Fine-tuning \\
+			\hline
+			Khả năng cập nhật dữ liệu & Dễ dàng & Khó khăn \\
+			\hline
+			Chi phí triển khai & Thấp & Cao \\
+			\hline
+			Thời gian triển khai & Nhanh & Chậm \\
+			\hline
+			Yêu cầu phần cứng & Trung bình & Cao \\
+			\hline
+			Độ chính xác chuyên ngành & Tốt & Rất tốt \\
+			\hline
+			Khả năng mở rộng & Cao & Trung bình \\
+			\hline
+			Nguy cơ Hallucination & Thấp hơn & Cao hơn \\
+			\hline
+			Bảo trì hệ thống & Dễ dàng & Phức tạp \\
+			\hline
+		\end{tabular}
+	\end{table}
+
+	% =========================
+	
+	\chapter{PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG}
+	
+	\section{Giới thiệu chương}
+	
+	Chương này trình bày quá trình phân tích yêu cầu và thiết kế hệ thống chatbot hỗ trợ sinh viên hỏi đáp dựa trên tài liệu môn học. Nội dung bao gồm việc xác định các tác nhân tham gia, yêu cầu chức năng, yêu cầu phi chức năng, mô hình ca sử dụng và thiết kế tổng quan hệ thống. Đây là cơ sở để triển khai hệ thống ở các chương tiếp theo.
+	
+	\section{Phân tích yêu cầu hệ thống}
+	
+	\subsection{Mô tả bài toán}
+	
+	Trong quá trình học tập, sinh viên thường gặp khó khăn khi tìm kiếm thông tin trong các giáo trình và tài liệu học tập có dung lượng lớn. Việc tra cứu thủ công tốn nhiều thời gian và đôi khi không tìm được thông tin mong muốn.
+	
+	Để giải quyết vấn đề này, đề tài xây dựng một chatbot có khả năng tiếp nhận câu hỏi bằng ngôn ngữ tự nhiên, truy xuất thông tin từ tài liệu môn học và cung cấp câu trả lời phù hợp cho sinh viên. Đồng thời hệ thống cho phép đánh giá và so sánh hiệu quả giữa hai phương pháp RAG và Fine-tuning trong môi trường tiếng Việt.
+	
+	\subsection{Đối tượng sử dụng}
+	
+	Hệ thống bao gồm hai nhóm người dùng chính:
+	
+	\begin{itemize}
+		\item Sinh viên.
+		\item Quản trị viên hệ thống.
+	\end{itemize}
+	
+	\subsection{Yêu cầu chức năng}
+	
+	Hệ thống cần đáp ứng các chức năng sau:
+	
+	\begin{enumerate}
+		\item Sinh viên đặt câu hỏi bằng tiếng Việt.
+		\item Hệ thống tiếp nhận và xử lý câu hỏi.
+		\item Truy xuất tài liệu liên quan.
+		\item Sinh câu trả lời dựa trên nội dung tài liệu.
+		\item Hiển thị câu trả lời cho người dùng.
+		\item Quản lý tài liệu môn học.
+		\item Cập nhật cơ sở tri thức.
+		\item Đánh giá chất lượng phản hồi.
+		\item So sánh kết quả giữa RAG và Fine-tuning.
+	\end{enumerate}
+	
+	\subsection{Yêu cầu phi chức năng}
+	
+	\begin{itemize}
+		\item Giao diện dễ sử dụng.
+		\item Thời gian phản hồi ngắn.
+		\item Hỗ trợ tiếng Việt.
+		\item Dễ mở rộng dữ liệu.
+		\item Đảm bảo tính chính xác của thông tin.
+		\item Có khả năng hoạt động ổn định với nhiều người dùng.
+	\end{itemize}
+	
+	\section{Phân tích Use Case}
+	
+	\subsection{Tác nhân hệ thống}
+	
+	\textbf{Sinh viên}
+	
+	\begin{itemize}
+		\item Đặt câu hỏi.
+		\item Nhận câu trả lời.
+		\item Đánh giá kết quả.
+	\end{itemize}
+	
+	\textbf{Quản trị viên}
+	
+	\begin{itemize}
+		\item Quản lý tài liệu.
+		\item Cập nhật dữ liệu.
+		\item Theo dõi hệ thống.
+	\end{itemize}
+	
+	\subsection{Các Use Case chính}
+	
+	\begin{enumerate}
+		\item Đăng nhập hệ thống.
+		\item Đặt câu hỏi.
+		\item Tìm kiếm thông tin.
+		\item Nhận phản hồi.
+		\item Tải lên tài liệu.
+		\item Cập nhật dữ liệu.
+		\item Đánh giá chất lượng chatbot.
+	\end{enumerate}
+	
+	\section{Thiết kế hệ thống}
+	
+	\subsection{Kiến trúc tổng quan}
+	
+	Hệ thống được thiết kế theo mô hình Client - Server bao gồm các thành phần:
+	
+	\begin{itemize}
+		\item Giao diện người dùng (Frontend).
+		\item API Server.
+		\item Module NLP.
+		\item Module RAG.
+		\item Module Fine-tuning.
+		\item Vector Database.
+		\item Kho tài liệu môn học.
+		\item Mô hình ngôn ngữ lớn.
+	\end{itemize}
+	
+	\subsection{Luồng xử lý câu hỏi}
+	
+	Khi sinh viên gửi câu hỏi, hệ thống thực hiện các bước sau:
+	
+	\begin{enumerate}
+		\item Tiếp nhận câu hỏi từ người dùng.
+		\item Tiền xử lý văn bản bằng NLP.
+		\item Chuyển câu hỏi thành vector embedding.
+		\item Truy xuất tài liệu liên quan từ Vector Database.
+		\item Gửi câu hỏi và dữ liệu truy xuất đến mô hình ngôn ngữ.
+		\item Sinh câu trả lời.
+		\item Hiển thị kết quả cho người dùng.
+	\end{enumerate}
+	
+	\subsection{Thiết kế cơ sở dữ liệu}
+	
+	Hệ thống lưu trữ các nhóm dữ liệu chính:
+	
+	\begin{itemize}
+		\item Thông tin người dùng.
+		\item Tài liệu môn học.
+		\item Lịch sử hội thoại.
+		\item Kết quả đánh giá.
+		\item Vector Embedding.
+	\end{itemize}
+	
+	\section{Thiết kế giao diện}
+	
+	\subsection{Giao diện sinh viên}
+	
+	Giao diện sinh viên bao gồm:
+	
+	\begin{itemize}
+		\item Khung nhập câu hỏi.
+		\item Khu vực hiển thị hội thoại.
+		\item Danh sách lịch sử trao đổi.
+		\item Nút gửi câu hỏi.
+	\end{itemize}
+	
+	\subsection{Giao diện quản trị}
+	
+	Giao diện quản trị bao gồm:
+	
+	\begin{itemize}
+		\item Quản lý tài liệu.
+		\item Quản lý dữ liệu vector.
+		\item Theo dõi lịch sử truy vấn.
+		\item Thống kê hiệu suất hệ thống.
+	\end{itemize}
+	
+	\section{Tiêu chí đánh giá hệ thống}
+	
+	Để so sánh RAG và Fine-tuning, đề tài sử dụng các tiêu chí sau:
+	
+	\begin{itemize}
+		\item Độ chính xác của câu trả lời.
+		\item Mức độ liên quan của phản hồi.
+		\item Thời gian phản hồi.
+		\item Chi phí triển khai.
+		\item Khả năng cập nhật dữ liệu.
+		\item Khả năng mở rộng hệ thống.
+	\end{itemize}
+	
+	\section{Kết luận chương}
+	
+	Chương này đã trình bày quá trình phân tích yêu cầu và thiết kế hệ thống chatbot hỗ trợ sinh viên hỏi đáp dựa trên tài liệu môn học. Các yêu cầu chức năng, phi chức năng, kiến trúc hệ thống và luồng xử lý đã được xác định rõ ràng, tạo cơ sở cho việc xây dựng và triển khai hệ thống ở chương tiếp theo.
+	
+	% =========================
+	\chapter{KIẾN TRÚC HỆ THỐNG}
+	
+	\section{Giới thiệu chương}
+	
+	Sau khi hoàn thành quá trình phân tích và thiết kế hệ thống, chương này trình bày kiến trúc tổng thể của chatbot hỗ trợ sinh viên hỏi đáp dựa trên tài liệu môn học. Nội dung bao gồm các thành phần của hệ thống, luồng xử lý dữ liệu, kiến trúc triển khai và cách tích hợp giữa mô hình ngôn ngữ lớn với các kỹ thuật RAG và Fine-tuning.
+	
+	\section{Kiến trúc tổng thể hệ thống}
+	
+	Hệ thống chatbot được xây dựng theo mô hình Client - Server kết hợp với các thành phần trí tuệ nhân tạo nhằm hỗ trợ sinh viên tra cứu thông tin từ tài liệu môn học.
+	
+	Kiến trúc tổng thể bao gồm các thành phần chính:
+	
+	\begin{itemize}
+		\item Giao diện người dùng (Frontend).
+		\item Máy chủ ứng dụng (Backend Server).
+		\item Module xử lý ngôn ngữ tự nhiên (NLP).
+		\item Module Embedding.
+		\item Vector Database.
+		\item Kho tài liệu môn học.
+		\item Module Retrieval.
+		\item Mô hình ngôn ngữ lớn (LLM).
+		\item Module đánh giá kết quả.
+	\end{itemize}
+	
+	\section{Kiến trúc phía người dùng}
+	
+	Giao diện người dùng đóng vai trò là nơi tương tác giữa sinh viên và hệ thống chatbot.
+	
+	Các chức năng chính gồm:
+	
+	\begin{itemize}
+		\item Nhập câu hỏi.
+		\item Hiển thị lịch sử hội thoại.
+		\item Hiển thị câu trả lời.
+		\item Đánh giá chất lượng phản hồi.
+	\end{itemize}
+	
+	Frontend có thể được phát triển bằng:
+	
+	\begin{itemize}
+		\item HTML.
+		\item CSS.
+		\item JavaScript.
+		\item ReactJS.
+	\end{itemize}
+	
+	\section{Kiến trúc phía máy chủ}
+	
+	Backend là thành phần xử lý toàn bộ yêu cầu từ người dùng.
+	
+	Các nhiệm vụ chính:
+	
+	\begin{itemize}
+		\item Nhận câu hỏi từ giao diện.
+		\item Gửi dữ liệu đến module NLP.
+		\item Điều phối quá trình truy xuất tài liệu.
+		\item Giao tiếp với mô hình ngôn ngữ lớn.
+		\item Trả kết quả về giao diện.
+	\end{itemize}
+	
+	Backend có thể được triển khai bằng:
+	
+	\begin{itemize}
+		\item Python.
+		\item FastAPI.
+		\item Flask.
+	\end{itemize}
+	
+	\section{Kiến trúc xử lý tài liệu}
+	
+	Tài liệu môn học là nguồn tri thức chính của hệ thống.
+	
+	Quá trình xử lý tài liệu gồm các bước:
+	
+	\begin{enumerate}
+		\item Thu thập tài liệu.
+		\item Chuyển đổi tài liệu sang dạng văn bản.
+		\item Chia nhỏ nội dung thành các đoạn văn.
+		\item Tạo vector embedding.
+		\item Lưu vào Vector Database.
+	\end{enumerate}
+	
+	Mục tiêu của bước này là giúp hệ thống có thể tìm kiếm và truy xuất thông tin hiệu quả.
+	
+	\section{Kiến trúc Embedding}
+	
+	Embedding đóng vai trò chuyển đổi dữ liệu văn bản thành các vector số.
+	
+	Quá trình hoạt động:
+	
+	\begin{enumerate}
+		\item Nhận dữ liệu văn bản.
+		\item Chuyển văn bản thành vector.
+		\item Lưu vector vào Vector Database.
+	\end{enumerate}
+	
+	Các mô hình Embedding có thể sử dụng:
+	
+	\begin{itemize}
+		\item Sentence Transformers.
+		\item BGE Embedding.
+		\item OpenAI Embedding.
+		\item Vietnamese Sentence Embedding.
+	\end{itemize}
+	
+	\section{Kiến trúc Vector Database}
+	
+	Vector Database lưu trữ các vector biểu diễn tài liệu.
+	
+	Nhiệm vụ chính:
+	
+	\begin{itemize}
+		\item Lưu trữ embedding.
+		\item Tìm kiếm ngữ nghĩa.
+		\item Truy xuất dữ liệu tương đồng.
+	\end{itemize}
+	
+	Trong đề tài này có thể sử dụng:
+	
+	\begin{itemize}
+		\item FAISS.
+		\item ChromaDB.
+	\end{itemize}
+	
+	Khi người dùng gửi câu hỏi, hệ thống sẽ tìm kiếm các vector có độ tương đồng cao nhất để phục vụ quá trình sinh câu trả lời.
+	
+	\section{Kiến trúc RAG}
+	
+	RAG là thành phần quan trọng giúp chatbot khai thác tri thức từ tài liệu môn học.
+	
+	Quy trình hoạt động:
+	
+	\begin{enumerate}
+		\item Sinh viên gửi câu hỏi.
+		\item Hệ thống tạo embedding cho câu hỏi.
+		\item Tìm kiếm tài liệu liên quan.
+		\item Truy xuất các đoạn văn phù hợp.
+		\item Gửi dữ liệu đến mô hình ngôn ngữ.
+		\item Sinh câu trả lời.
+	\end{enumerate}
+	
+	Ưu điểm của RAG là khả năng cập nhật dữ liệu nhanh mà không cần huấn luyện lại mô hình.
+	
+	\section{Kiến trúc Fine-tuning}
+	
+	Đối với phương pháp Fine-tuning, mô hình được huấn luyện thêm bằng dữ liệu chuyên ngành.
+	
+	Quy trình thực hiện:
+	
+	\begin{enumerate}
+		\item Thu thập dữ liệu huấn luyện.
+		\item Tiền xử lý dữ liệu.
+		\item Tạo tập dữ liệu Question - Answer.
+		\item Huấn luyện mô hình.
+		\item Đánh giá kết quả.
+	\end{enumerate}
+	
+	Mô hình sau khi Fine-tuning có khả năng trả lời tốt hơn đối với các câu hỏi thuộc lĩnh vực chuyên biệt.
+	
+	\section{Luồng xử lý câu hỏi}
+	
+	Khi sinh viên gửi một câu hỏi, hệ thống thực hiện các bước sau:
+	
+	\begin{enumerate}
+		\item Tiếp nhận câu hỏi.
+		\item Tiền xử lý bằng NLP.
+		\item Tạo embedding.
+		\item Tìm kiếm tài liệu liên quan.
+		\item Truy xuất dữ liệu.
+		\item Gửi dữ liệu tới LLM.
+		\item Sinh câu trả lời.
+		\item Trả kết quả cho người dùng.
+	\end{enumerate}
+	
+	\section{Kiến trúc triển khai hệ thống}
+	
+	Môi trường triển khai bao gồm:
+	
+	\begin{itemize}
+		\item Máy chủ ứng dụng.
+		\item Máy chủ cơ sở dữ liệu.
+		\item Vector Database.
+		\item Mô hình ngôn ngữ lớn.
+	\end{itemize}
+	
+	Các thành phần có thể được triển khai trên cùng một máy chủ hoặc trên nhiều máy chủ khác nhau tùy thuộc vào quy mô hệ thống.
+	
+	\section{Đánh giá kiến trúc hệ thống}
+	
+	Kiến trúc được đề xuất đáp ứng các yêu cầu:
+	
+	\begin{itemize}
+		\item Dễ mở rộng.
+		\item Dễ bảo trì.
+		\item Hỗ trợ cập nhật dữ liệu.
+		\item Phù hợp với tiếng Việt.
+		\item Cho phép so sánh giữa RAG và Fine-tuning.
+	\end{itemize}
+	
+	Ngoài ra, việc sử dụng Vector Database và Embedding giúp tăng hiệu quả truy xuất thông tin, trong khi mô hình ngôn ngữ lớn giúp tạo ra các câu trả lời tự nhiên và chính xác hơn.
+	
+	\section{Kết luận chương}
+	
+	Chương này đã trình bày kiến trúc tổng thể của hệ thống chatbot hỗ trợ sinh viên hỏi đáp dựa trên tài liệu môn học. Các thành phần từ giao diện người dùng, hệ thống xử lý dữ liệu, Vector Database, RAG, Fine-tuning và mô hình ngôn ngữ lớn đã được mô tả chi tiết. Đây là cơ sở để triển khai thực nghiệm và đánh giá hiệu quả hệ thống trong chương tiếp theo.
+	
+	
+	% =========================
+	\chapter{Kết luận và hướng phát triển}
+	
+	\section{Kết quả đạt được}
+	
+	Trong đề tài ``Xây dựng chatbot cho phép sinh viên hỏi đáp dựa trên tài liệu môn học, đồng thời nghiên cứu và so sánh hiệu quả giữa RAG và Fine-tuning trong bối cảnh tiếng Việt'', nhóm đã nghiên cứu các công nghệ liên quan đến trí tuệ nhân tạo, xử lý ngôn ngữ tự nhiên và mô hình ngôn ngữ lớn.
+	
+	Đề tài đã tìm hiểu các khái niệm quan trọng như Chatbot, NLP, LLM, RAG, Fine-tuning, Embedding và Vector Database. Đây là những thành phần nền tảng trong việc xây dựng một hệ thống hỏi đáp thông minh.
+	
+	Bên cạnh đó, hệ thống chatbot được thiết kế nhằm hỗ trợ sinh viên tra cứu kiến thức từ tài liệu môn học bằng tiếng Việt. Hệ thống cho phép tiếp nhận câu hỏi, truy xuất thông tin liên quan từ tài liệu và sinh câu trả lời phù hợp cho người dùng.
+	
+	Ngoài việc xây dựng hệ thống, đề tài còn thực hiện nghiên cứu và so sánh hai phương pháp RAG và Fine-tuning dựa trên các tiêu chí như độ chính xác, thời gian phản hồi, khả năng cập nhật dữ liệu và chi phí triển khai.
+	
+	Kết quả nghiên cứu cho thấy RAG có ưu thế trong việc cập nhật tri thức và tiết kiệm chi phí, trong khi Fine-tuning có khả năng thích nghi tốt hơn với các dữ liệu chuyên ngành. Mỗi phương pháp đều có những ưu điểm và hạn chế riêng tùy theo mục đích sử dụng.
+	
+	\section{Hạn chế của đề tài}
+	
+	Mặc dù đã đạt được các mục tiêu đề ra, đề tài vẫn còn một số hạn chế nhất định:
+	
+	\begin{itemize}
+		\item Số lượng dữ liệu thử nghiệm còn hạn chế.
+		\item Chưa đánh giá trên nhiều lĩnh vực và môn học khác nhau.
+		\item Chưa thực hiện Fine-tuning trên các mô hình lớn do hạn chế về tài nguyên phần cứng.
+		\item Chưa hỗ trợ các dạng dữ liệu đa phương tiện như hình ảnh hoặc âm thanh.
+		\item Chưa xây dựng được bộ tiêu chí đánh giá tự động hoàn chỉnh cho chatbot tiếng Việt.
+	\end{itemize}
+	
+	\section{Hướng phát triển}
+	
+	Trong tương lai, hệ thống có thể được mở rộng theo các hướng sau:
+	
+	\begin{itemize}
+		\item Bổ sung thêm dữ liệu từ nhiều môn học khác nhau.
+		\item Nâng cấp mô hình ngôn ngữ để cải thiện chất lượng phản hồi.
+		\item Kết hợp RAG và Fine-tuning nhằm tận dụng ưu điểm của cả hai phương pháp.
+		\item Xây dựng hệ thống đánh giá tự động chất lượng câu trả lời.
+		\item Hỗ trợ tìm kiếm thông tin từ nhiều nguồn dữ liệu khác nhau.
+		\item Phát triển ứng dụng trên nền tảng web và thiết bị di động.
+		\item Tích hợp chức năng nhận dạng và phản hồi bằng giọng nói.
+	\end{itemize}
+	
+	\section{Tổng kết}
+	
+	Đề tài đã nghiên cứu và xây dựng chatbot hỗ trợ sinh viên hỏi đáp dựa trên tài liệu môn học bằng tiếng Việt. Thông qua việc tìm hiểu và so sánh hai phương pháp RAG và Fine-tuning, đề tài đã làm rõ đặc điểm, ưu điểm và hạn chế của từng phương pháp trong bài toán hỏi đáp tri thức.
+	
+	Kết quả đạt được cho thấy việc ứng dụng các mô hình ngôn ngữ lớn kết hợp với kỹ thuật truy xuất thông tin có tiềm năng lớn trong lĩnh vực giáo dục. Đây sẽ là nền tảng để tiếp tục phát triển các hệ thống hỗ trợ học tập thông minh trong tương lai.
+	
+	
+\end{document}
