@@ -3,9 +3,9 @@
 
 ---
 
-## 👤 HIỂN ĐẠT — BE: Database & Cấu Trúc Project
+## 👤 HIỂN ĐẠT — BE: Database & Domain Layer
 
-### Setup môi trường
+### Setup Môi Trường
 - [ ] Clone repo về máy
 - [ ] Tạo branch `feature/be-domain`
 - [ ] Tạo virtual environment Python
@@ -15,68 +15,74 @@
 ### Database MySQL
 - [ ] Cài MySQL + MySQL Workbench
 - [ ] Tạo database `chatbot_nhom9`
-- [ ] Tạo bảng `users`
-- [ ] Tạo bảng `documents`
-- [ ] Tạo bảng `questions`
-- [ ] Tạo bảng `answers`
-- [ ] Tạo bảng `experiments`
-- [ ] Tạo bảng `evaluations`
+- [ ] Tạo 6 bảng: users, documents, questions, answers, experiments, evaluations
 
-### Code Backend
-- [ ] Viết `app/domain/models.py` — SQLAlchemy models
+### Code Domain Layer
+- [ ] Viết `app/domain/models.py` — SQLAlchemy ORM models
 - [ ] Viết `app/domain/schemas.py` — Pydantic schemas
+- [ ] Viết `app/domain/database.py` — kết nối SQLAlchemy
 - [ ] Viết `app/repositories/mysql_repo.py` — CRUD MySQL
 - [ ] Viết `app/repositories/vector_repo.py` — ChromaDB
 - [ ] Test kết nối MySQL thành công
 - [ ] Test kết nối ChromaDB thành công
 
 ### Git
-- [ ] Tạo Pull Request vào `develop`
+- [ ] Tạo Pull Request `feature/be-domain` → `develop`
 - [ ] Được review và merge
 
 ---
 
-## 👤 LIÊN HƯNG — BE: RAG Core
+## 👤 LIÊN HƯNG — BE: RAG Core + Kiến Trúc Tổng Thể
 
-### Điều kiện
-- [ ] Người 1 đã merge `feature/be-domain` vào `develop`
-
-### Setup
+### Setup & Kiến Trúc
 - [ ] Tạo branch `feature/be-rag` từ `develop`
-- [ ] Có OpenAI API key trong `.env`
+- [ ] Thiết kế toàn bộ Clean Architecture: domain → repositories → use_cases → api
+- [ ] Cấu hình `app/api/main.py` — khởi tạo FastAPI, CORS, đăng ký tất cả router
+- [ ] Viết `app/api/v1/users.py` — API đăng ký / đăng nhập
 
-### Code RAG
+### RAG Ingestion Pipeline
 - [ ] Viết `app/use_cases/ingestion.py`
-  - [ ] Đọc file PDF
-  - [ ] Đọc file DOCX
+  - [ ] Đọc và parse file PDF
+  - [ ] Đọc và parse file DOCX
   - [ ] Chunking: Fixed-size
-  - [ ] Chunking: Semantic
   - [ ] Chunking: Recursive
-  - [ ] Embed và lưu vào ChromaDB
+  - [ ] Chunking: Semantic
+  - [ ] Embed văn bản với embedding model được chọn
+  - [ ] Lưu vectors + metadata vào ChromaDB
+  - [ ] Cập nhật trạng thái tài liệu trong MySQL
+
+### RAG Chat Pipeline
 - [ ] Viết `app/use_cases/chat.py`
-  - [ ] Truy vấn ChromaDB lấy context
-  - [ ] Xây dựng prompt
+  - [ ] Nhúng câu hỏi thành vector embedding
+  - [ ] Truy vấn ChromaDB lấy Top-K chunks liên quan
+  - [ ] Xây dựng prompt với context + lịch sử chat
   - [ ] Gọi GPT-4o-mini
-  - [ ] Lưu lịch sử chat vào MySQL
-- [ ] Viết `app/api/v1/documents.py` — API upload tài liệu
-- [ ] Viết `app/api/v1/chat.py` — API chat
+  - [ ] Lưu question + answer + context_sources vào MySQL
+  - [ ] Trả về response_time, model_used, context_sources
+
+### API Endpoints
+- [ ] Viết `app/api/v1/documents.py`
+  - [ ] POST /documents/ — upload file PDF/DOCX
+  - [ ] GET /documents/ — danh sách tài liệu
+  - [ ] DELETE /documents/{id} — xóa tài liệu
+- [ ] Viết `app/api/v1/chat.py`
+  - [ ] POST /chat/ — gửi câu hỏi, nhận câu trả lời RAG
+  - [ ] GET /chat/history — lịch sử hội thoại
 
 ### Test
 - [ ] Test upload PDF thành công
 - [ ] Test upload DOCX thành công
 - [ ] Test chat trả lời đúng ngữ cảnh
 - [ ] Test trích dẫn nguồn tài liệu
+- [ ] Test với tài liệu tiếng Việt
 
 ### Git
-- [ ] Tạo Pull Request vào `develop`
+- [ ] Tạo Pull Request `feature/be-rag` → `develop`
 - [ ] Được review và merge
 
 ---
 
-## 👤 DANH NINH  — BE: Benchmark & API
-
-### Điều kiện
-- [ ] Người 1 đã merge `feature/be-domain` vào `develop`
+## 👤 NINH DANH — BE: Benchmark & Evaluation
 
 ### Setup
 - [ ] Tạo branch `feature/be-benchmark` từ `develop`
@@ -93,16 +99,14 @@
   - [ ] So sánh các embedding model
 - [ ] Viết `app/api/v1/experiments.py` — API chạy thử nghiệm
 - [ ] Viết `app/api/v1/reports.py` — API lấy kết quả
-- [ ] Viết `app/api/v1/users.py` — API user
-- [ ] Viết `app/api/main.py` — Ghép tất cả router
 
 ### Test
 - [ ] Chạy RAGAS với test set 50 câu hỏi
 - [ ] Lưu kết quả vào bảng `evaluations`
-- [ ] API reports trả về dữ liệu đúng format
+- [ ] API reports trả về đúng format
 
 ### Git
-- [ ] Tạo Pull Request vào `develop`
+- [ ] Tạo Pull Request `feature/be-benchmark` → `develop`
 - [ ] Được review và merge
 
 ---
