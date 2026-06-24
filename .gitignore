@@ -216,3 +216,43 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Node
+node_modules/
+dist/
+.env.local
+
+# Database & Vector Store
+backend/chroma_db/
+*.db
+*.sqlite
+
+# File test tạm thời
+backend/test.pdf
+backend/test.docx
+backend/test.txt
+
+# File PDF tài liệu (không cần lưu trên Git)
+README.pdf
+
+# Python virtual environment
+.venv/
+venv/
+backend/venv/
+
+# File môi trường bí mật (KHÔNG BAO GIỜ commit file này)
+.env
+backend/.env
+*.env
+
+# Node modules (frontend)
+frontend/node_modules/
+node_modules/
+
+# Build output
+frontend/dist/
+dist/
+
+# Cache Python
+__pycache__/
+backend/__pycache__/
