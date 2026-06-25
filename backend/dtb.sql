@@ -1,12 +1,13 @@
 -- ============================================================
 --  DATABASE: chatbot_nhom9
---  Theo đúng cấu trúc slide "5. Cơ Sở Dữ Liệu"
 -- ============================================================
+
+DROP DATABASE IF EXISTS chatbot_nhom9;
 
 CREATE DATABASE IF NOT EXISTS chatbot_nhom9
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
-
+  
 USE chatbot_nhom9;
 
 -- ============================================================
@@ -17,6 +18,7 @@ CREATE TABLE users (
     ten           VARCHAR(100)  NOT NULL COMMENT 'Tên người dùng',
     email         VARCHAR(255)  NOT NULL,
     mat_khau      VARCHAR(255)  NOT NULL COMMENT 'Bcrypt hash',
+    is_active     TINYINT(1)    NOT NULL DEFAULT 1 COMMENT 'Tài khoản còn hoạt động',
     created_at    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
@@ -28,13 +30,15 @@ COMMENT='Tài khoản người dùng';
 -- 2. DOCUMENTS
 -- ============================================================
 CREATE TABLE documents (
-    id            INT UNSIGNED  NOT NULL AUTO_INCREMENT,
-    user_id       INT UNSIGNED  NOT NULL,
-    ten_file      VARCHAR(255)  NOT NULL COMMENT 'Tên file gốc',
-    mon_hoc       VARCHAR(255)           COMMENT 'Môn học / chủ đề',
-    trang_thai    ENUM('pending','processing','ready','error')
-                                NOT NULL DEFAULT 'pending' COMMENT 'Trạng thái xử lý',
-    ngay_upload   DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Ngày upload',
+    id              INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+    user_id         INT UNSIGNED  NOT NULL,
+    ten_file        VARCHAR(255)  NOT NULL COMMENT 'Tên file gốc',
+    mon_hoc         VARCHAR(255)           COMMENT 'Môn học / chủ đề',
+    trang_thai      ENUM('pending','processing','ready','error')
+                                  NOT NULL DEFAULT 'pending' COMMENT 'Trạng thái xử lý',
+    so_chunks       INT           NOT NULL DEFAULT 0 COMMENT 'Số chunks đã tạo',
+    embedding_model VARCHAR(100)           COMMENT 'Model embedding đã dùng',
+    ngay_upload     DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Ngày upload',
     PRIMARY KEY (id),
     KEY idx_documents_user_id    (user_id),
     KEY idx_documents_trang_thai (trang_thai),
@@ -68,6 +72,10 @@ CREATE TABLE answers (
     noi_dung_tra_loi   LONGTEXT      NOT NULL COMMENT 'Nội dung trả lời của LLM',
     response_time      FLOAT         NOT NULL DEFAULT 0 COMMENT 'Thời gian phản hồi (giây)',
     question_id        INT UNSIGNED  NOT NULL,
+    model_used         VARCHAR(100)           COMMENT 'LLM model đã dùng',
+    embedding_model    VARCHAR(100)           COMMENT 'Embedding model đã dùng',
+    chunking_strategy  VARCHAR(50)            COMMENT 'Chiến lược chunking',
+    context_sources    LONGTEXT               COMMENT 'JSON nguồn trích dẫn',
     created_at         DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     KEY idx_answers_question_id (question_id),
@@ -82,9 +90,11 @@ COMMENT='Câu trả lời của chatbot cho từng câu hỏi';
 CREATE TABLE experiments (
     id                  INT UNSIGNED  NOT NULL AUTO_INCREMENT,
     ten_thu_nghiem      VARCHAR(255)  NOT NULL COMMENT 'Tên thử nghiệm',
+    mo_ta               TEXT                   COMMENT 'Mô tả thử nghiệm',
     chunking_strategy   ENUM('fixed-size','semantic','recursive')
                                      NOT NULL COMMENT 'Chiến lược chunking',
     embedding_model     VARCHAR(100)  NOT NULL COMMENT 'Model embedding sử dụng',
+    ai_model            VARCHAR(100)  NOT NULL DEFAULT 'gpt-4o-mini' COMMENT 'AI model sử dụng',
     user_id             INT UNSIGNED           COMMENT 'Người tạo thử nghiệm',
     trang_thai          ENUM('pending','running','completed','failed')
                                      NOT NULL DEFAULT 'pending',
@@ -103,9 +113,11 @@ COMMENT='Cấu hình mỗi lần chạy thử nghiệm benchmark RAG';
 CREATE TABLE evaluations (
     id                  INT UNSIGNED  NOT NULL AUTO_INCREMENT,
     experiment_id       INT UNSIGNED  NOT NULL,
+    answer_id           INT UNSIGNED           COMMENT 'Câu trả lời được đánh giá',
     accuracy            FLOAT                  COMMENT 'Độ chính xác (0.0 - 1.0)',
     relevancy           FLOAT                  COMMENT 'Độ liên quan (0.0 - 1.0)',
     faithfulness        FLOAT                  COMMENT 'Độ trung thực (0.0 - 1.0)',
+    overall_score       FLOAT                  COMMENT 'Điểm tổng hợp',
     latency             FLOAT                  COMMENT 'Độ trễ phản hồi (ms)',
     created_at          DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
