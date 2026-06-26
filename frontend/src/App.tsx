@@ -2,7 +2,7 @@ import Sidebar from "./components/layout/Sidebar.tsx";
 import Navbar from "./components/layout/Navbar.tsx";
 
 import HomePage from "./pages/HomePage.tsx";
-import ChatPage from "./pages/ChatPage.jsx";
+import ChatPage from "./pages/ChatPage.tsx";
 import DocumentsPage from "./pages/DocumentsPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
