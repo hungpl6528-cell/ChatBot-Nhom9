@@ -3,7 +3,7 @@ import Navbar from "./components/layout/Navbar.tsx";
 
 import HomePage from "./pages/HomePage.jsx";
 import ChatPage from "./pages/ChatPage.jsx";
-import DocumentsPage from "./pages/DocumentsPage.jsx";
+import DocumentsPage from "./pages/DocumentsPage.tsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 

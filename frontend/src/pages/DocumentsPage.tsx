@@ -2,22 +2,23 @@ import { useState } from "react";
 
 import FileUploader from "../components/documents/FileUploader";
 import DocumentList from "../components/documents/DocumentList";
+import type { DocumentItem } from "../components/documents/DocumentList";
 
 export default function DocumentsPage() {
-  const [documents, setDocuments] = useState([]);
+  const [documents, setDocuments] = useState<DocumentItem[]>([]);
 
   return (
     <div>
       <h1>Documents Manager</h1>
 
-  <p
-  style={{
-    color: "#666",
-    marginBottom: "20px",
-  }}
->
-  Total documents: {documents.length}
-</p>
+      <p
+        style={{
+          color: "#666",
+          marginBottom: "20px",
+        }}
+      >
+        Total documents: {documents.length}
+      </p>
 
       <FileUploader
         documents={documents}
@@ -25,9 +26,9 @@ export default function DocumentsPage() {
       />
 
       <DocumentList
-  documents={documents}
-  setDocuments={setDocuments}
-/>
+        documents={documents}
+        setDocuments={setDocuments}
+      />
     </div>
   );
 }

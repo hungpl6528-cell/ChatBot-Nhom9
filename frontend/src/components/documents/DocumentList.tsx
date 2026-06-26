@@ -1,8 +1,20 @@
+import type { Dispatch, SetStateAction } from "react";
+
+export interface DocumentItem {
+  name: string;
+  status: string;
+}
+
+interface DocumentListProps {
+  documents: DocumentItem[];
+  setDocuments: Dispatch<SetStateAction<DocumentItem[]>>;
+}
+
 export default function DocumentList({
   documents,
   setDocuments,
-}) {
-  const handleDelete = (indexToDelete) => {
+}: DocumentListProps) {
+  const handleDelete = (indexToDelete: number) => {
     const updatedDocuments = documents.filter(
       (_, index) => index !== indexToDelete
     );
