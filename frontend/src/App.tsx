@@ -1,11 +1,11 @@
-import Sidebar from "./components/layout/Sidebar";
-import Navbar from "./components/layout/Navbar";
+import Sidebar from "./components/layout/Sidebar.jsx";
+import Navbar from "./components/layout/Navbar.jsx";
 
-import HomePage from "./pages/HomePage";
-import ChatPage from "./pages/ChatPage";
-import DocumentsPage from "./pages/DocumentsPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
+import HomePage from "./pages/HomePage.jsx";
+import ChatPage from "./pages/ChatPage.jsx";
+import DocumentsPage from "./pages/DocumentsPage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
 
 import { Routes, Route } from "react-router-dom";
 
