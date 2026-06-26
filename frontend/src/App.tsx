@@ -1,5 +1,5 @@
-import Sidebar from "./components/layout/Sidebar.jsx";
-import Navbar from "./components/layout/Navbar.jsx";
+import Sidebar from "./components/layout/Sidebar.tsx";
+import Navbar from "./components/layout/Navbar.tsx";
 
 import HomePage from "./pages/HomePage.jsx";
 import ChatPage from "./pages/ChatPage.jsx";
