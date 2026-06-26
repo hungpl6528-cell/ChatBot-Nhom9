@@ -1,7 +1,7 @@
 import Sidebar from "./components/layout/Sidebar.tsx";
 import Navbar from "./components/layout/Navbar.tsx";
 
-import HomePage from "./pages/HomePage.jsx";
+import HomePage from "./pages/HomePage.tsx";
 import ChatPage from "./pages/ChatPage.jsx";
 import DocumentsPage from "./pages/DocumentsPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
