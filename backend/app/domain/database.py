@@ -35,3 +35,28 @@ def get_db():
 def create_tables():
     """Create all tables on startup."""
     Base.metadata.create_all(bind=engine)
+
+def seed_default_user():
+    """
+    Tạo user mặc định (guest) nếu chưa có user nào trong DB.
+    Cần thiết để upload file mà không cần đăng nhập.
+    """
+    from app.domain.models import User
+    import bcrypt
+
+    db = SessionLocal()
+    try:
+        existing = db.query(User).filter(User.email == "guest@system.local").first()
+        if not existing:
+            hashed = bcrypt.hashpw(b"guest_no_login", bcrypt.gensalt()).decode("utf-8")
+            default_user = User(
+                ten="Guest",
+                email="guest@system.local",
+                mat_khau=hashed,
+                is_active=True,
+            )
+            db.add(default_user)
+            db.commit()
+    finally:
+        db.close()
+
