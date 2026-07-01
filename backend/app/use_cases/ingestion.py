@@ -209,6 +209,9 @@ async def ingest_document(
     Full ingestion pipeline.
     Returns: {document_id, chunks_count, embedding_model, chunking_strategy}
     """
+    import asyncio
+    from concurrent.futures import ThreadPoolExecutor
+
     doc_repo = DocumentRepository(db)
     vector_repo = VectorRepository()
 
@@ -229,9 +232,14 @@ async def ingest_document(
         chunks = apply_chunking(full_text, chunking_strategy)
         logger.info(f"[Ingestion] {filename} → {len(chunks)} chunks via '{chunking_strategy}'")
 
-        # 4. Embed
+        # 4. Embed — chạy trong thread pool để KHÔNG block event loop của uvicorn
         embedder = get_embedding_model(embedding_model_name)
-        embeddings = embedder.embed_documents(chunks)
+        loop = asyncio.get_event_loop()
+
+        def _embed():
+            return embedder.embed_documents(chunks)
+
+        embeddings = await loop.run_in_executor(None, _embed)
 
         # 5. Build metadata for each chunk
         metadatas = [
@@ -244,13 +252,17 @@ async def ingest_document(
             for i in range(len(chunks))
         ]
 
-        # 6. Store in ChromaDB
-        chunk_ids = vector_repo.add_chunks(
-            chunks=chunks,
-            embeddings=embeddings,
-            metadatas=metadatas,
-            embedding_model=embedding_model_name,
-        )
+        # 6. Store in ChromaDB — cũng chạy trong thread pool
+        def _store():
+            return vector_repo.add_chunks(
+                chunks=chunks,
+                embeddings=embeddings,
+                metadatas=metadatas,
+                embedding_model=embedding_model_name,
+            )
+
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            await loop.run_in_executor(pool, _store)
 
         # 7. Update document record
         doc_repo.update_status(
