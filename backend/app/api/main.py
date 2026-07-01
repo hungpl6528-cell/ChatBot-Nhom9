@@ -38,7 +38,7 @@ app.add_middleware(
 async def on_startup():
     """Create database tables on first run."""
     create_tables()
-
+    seed_default_user()
 
 # ─────────────────────────────────────────────
 # ROUTERS
