@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
-from app.domain.database import create_tables
+from app.domain.database import create_tables, seed_default_user
 from app.api.v1 import users, documents, chat, experiments, reports
 
 app = FastAPI(
