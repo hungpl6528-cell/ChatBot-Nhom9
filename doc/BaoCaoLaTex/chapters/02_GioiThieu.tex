@@ -12,143 +12,70 @@ Xuất phát từ nhu cầu đó, nhóm thực hiện đề tài:
 	\textbf{\Large XÂY DỰNG HỆ THỐNG CHATBOT HỖ TRỢ HỌC TẬP ỨNG DỤNG RETRIEVAL-AUGMENTED GENERATION (RAG)}
 \end{center}
 
-Hệ thống được xây dựng với mục tiêu hỗ trợ sinh viên đặt câu hỏi trực tiếp về nội dung môn học. Chatbot sẽ truy xuất thông tin từ tài liệu đã được tải lên, kết hợp cùng mô hình ngôn ngữ lớn để tạo ra câu trả lời có độ chính xác cao và sát với tài liệu gốc.
+Hệ thống được xây dựng với mục tiêu hỗ trợ sinh viên đặt câu hỏi trực tiếp về nội dung môn học. Chatbot sẽ truy xuất thông tin từ tài liệu đã được tải lên, kết hợp cùng mô hình ngôn ngữ lớn để tạo ra câu trả lời có độ chính xác cao và sát với tài liệu gốc. 
 
-Bên cạnh đó, đề tài còn nghiên cứu, đánh giá và so sánh hiệu quả giữa hai phương pháp phổ biến hiện nay là Retrieval-Augmented Generation (RAG) và Fine-Tuning nhằm xác định giải pháp phù hợp cho bài toán hỏi đáp tài liệu học tập.
+Bên cạnh đó, đề tài còn tập trung nghiên cứu, đánh giá và tối ưu hóa quy trình RAG thông qua việc so sánh các chiến lược phân mảnh dữ liệu (Chunking Strategies) và các mô hình biểu diễn từ (Embedding Models) nhằm xác định giải pháp mang lại hiệu năng cao nhất cho bài toán hỏi đáp tài liệu học tập.
 
 \section{Lý do chọn đề tài}
 
-Hiện nay, phần lớn sinh viên sử dụng các công cụ AI như ChatGPT hoặc Gemini để hỗ trợ học tập. Tuy nhiên, các mô hình này chủ yếu dựa trên dữ liệu được huấn luyện trước và không thể truy cập trực tiếp vào tài liệu nội bộ của từng môn học nếu không được cung cấp.
+Hiện nay, phần lớn sinh viên sử dụng các công cụ AI phổ biến như ChatGPT hoặc Gemini để hỗ trợ học tập. Tuy nhiên, các mô hình này chủ yếu dựa trên dữ liệu được huấn luyện trước (pre-trained data) và không thể truy cập trực tiếp vào tài liệu nội bộ, giáo trình đặc thù của từng môn học nếu không được người dùng chủ động cung cấp một cách thủ công. Điều này dẫn đến một số hạn chế nhất định như: câu trả lời có thể không bám sát nội dung môn học, khó trích dẫn nguồn gốc tài liệu, khó cập nhật nhanh khi nội dung giáo trình thay đổi, và độ chính xác thường suy giảm đáng kể đối với các mảng kiến thức chuyên ngành sâu.
 
-Điều này dẫn đến một số hạn chế:
+Trong khi đó, kỹ thuật Retrieval-Augmented Generation (RAG) nổi lên như một giải pháp đột phá, cho phép hệ thống tự động truy xuất trực tiếp các luồng thông tin từ các tài liệu do người dùng cung cấp, trước khi chuyển giao ngữ cảnh cho mô hình ngôn ngữ để sinh câu trả lời. Cơ chế này không chỉ giúp đảm bảo tính chính xác và khả năng trích dẫn minh bạch mà còn làm giảm thiểu đáng kể hiện tượng "ảo giác" (hallucination) thường gặp ở các LLM thông thường.
 
-\begin{itemize}
-	\item Câu trả lời có thể không đúng với giáo trình của môn học.
-	\item Khó trích dẫn nguồn tài liệu.
-	\item Không thể cập nhật nhanh khi tài liệu môn học thay đổi.
-	\item Độ chính xác giảm đối với các kiến thức chuyên ngành.
-\end{itemize}
-
-Trong khi đó, kỹ thuật Retrieval-Augmented Generation (RAG) cho phép hệ thống truy xuất trực tiếp thông tin từ các tài liệu do người dùng cung cấp trước khi sinh câu trả lời. Đồng thời, Fine-Tuning giúp mô hình học sâu hơn trên một tập dữ liệu chuyên biệt để nâng cao chất lượng phản hồi.
-
-Vì vậy, nhóm lựa chọn nghiên cứu và xây dựng hệ thống Chatbot kết hợp RAG và Fine-Tuning nhằm hỗ trợ học tập, đồng thời đánh giá ưu nhược điểm của từng phương pháp trong thực tế.
+Nhận thấy tiềm năng to lớn này, nhóm quyết định lựa chọn nghiên cứu và xây dựng hệ thống Chatbot chuyên sâu về công nghệ RAG. Qua đề tài, nhóm kỳ vọng không chỉ tạo ra một công cụ hỗ trợ đắc lực cho sinh viên trong quá trình tự học, mà còn cung cấp một nền tảng Benchmark để phân tích và đánh giá định lượng các thành phần kỹ thuật lõi bên trong RAG.
 
 \section{Mục tiêu đề tài}
 
-Đề tài hướng đến các mục tiêu sau:
+Đề tài hướng đến việc giải quyết các bài toán về truy xuất và tổng hợp tri thức với những mục tiêu cụ thể như sau:
 
 \begin{itemize}
-	
-	\item Xây dựng hệ thống Chatbot hỗ trợ trả lời câu hỏi liên quan đến tài liệu môn học.
-	
-	\item Cho phép người quản trị tải lên và quản lý tài liệu PDF phục vụ việc hỏi đáp.
-	
-	\item Xây dựng quy trình xử lý tài liệu bao gồm tách văn bản, chia nhỏ dữ liệu (Chunking), tạo Embedding và lưu trữ trong cơ sở dữ liệu vector ChromaDB.
-	
-	\item Tích hợp mô hình ngôn ngữ lớn thông qua FastAPI để sinh câu trả lời.
-	
-	\item Xây dựng giao diện Web bằng React giúp người dùng dễ dàng tương tác với hệ thống.
-	
-	\item So sánh chất lượng giữa mô hình RAG và Fine-Tuning dựa trên các tiêu chí như độ chính xác, tốc độ phản hồi và khả năng bám sát tài liệu.
-	
-	\item Đánh giá khả năng ứng dụng của hệ thống trong môi trường học tập thực tế.
-	
+	\item Xây dựng hệ thống Chatbot hoàn chỉnh có khả năng hỗ trợ trả lời các câu hỏi chuyên sâu liên quan trực tiếp đến tài liệu môn học của sinh viên.
+	\item Xây dựng quy trình xử lý tài liệu tự động (Ingestion Pipeline) bao gồm các bước: đọc file PDF/DOCX, làm sạch văn bản, phân mảnh dữ liệu (Chunking), tạo vector (Embedding) và lưu trữ hiệu quả trong cơ sở dữ liệu vector ChromaDB.
+	\item Tích hợp mô hình ngôn ngữ lớn thông qua FastAPI để sinh câu trả lời tự nhiên, chính xác dựa trên ngữ cảnh được cung cấp.
+	\item Xây dựng giao diện Web bằng ReactJS nhằm đem lại trải nghiệm tương tác mượt mà, thân thiện cho cả sinh viên và người quản trị.
+	\item Thiết lập module Benchmark để tiến hành thử nghiệm, đo lường và so sánh hiệu năng giữa các cấu hình RAG khác nhau (ví dụ: Recursive vs Fixed-size Chunking, mô hình Embedding của Google vs BAAI/bge-m3) dựa trên bộ tiêu chí RAGAS.
 \end{itemize}
 
 \section{Phạm vi nghiên cứu}
 
-Đề tài tập trung nghiên cứu và triển khai các nội dung sau:
+Đề tài tập trung nghiên cứu và triển khai giới hạn trong các nội dung sau: hệ thống hỗ trợ truy vấn thông tin chủ yếu từ tài liệu văn bản tĩnh (PDF, DOCX); triển khai kỹ thuật Retrieval-Augmented Generation (RAG) kết hợp với cơ sở dữ liệu vector ChromaDB; phát triển kiến trúc hệ thống Client-Server bao gồm Backend bằng FastAPI và Frontend bằng ReactJS; cuối cùng là việc đánh giá hiệu năng các mô hình thông qua bộ tiêu chuẩn đo lường định lượng.
 
-\begin{itemize}
-	
-	\item Xây dựng Chatbot phục vụ lĩnh vực học tập.
-	
-	\item Hỗ trợ truy vấn thông tin từ tài liệu PDF.
-	
-	\item Triển khai kỹ thuật RAG kết hợp ChromaDB.
-	
-	\item Nghiên cứu Fine-Tuning trên tập dữ liệu môn học.
-	
-	\item Phát triển Backend bằng FastAPI.
-	
-	\item Phát triển Frontend bằng ReactJS.
-	
-	\item Đánh giá hiệu năng và độ chính xác giữa RAG và Fine-Tuning.
-	
-\end{itemize}
-
-Đề tài chưa nghiên cứu các nội dung như nhận dạng giọng nói, xử lý hình ảnh, đa ngôn ngữ hoặc triển khai trên môi trường Cloud quy mô lớn.
+Đề tài tạm thời chưa nghiên cứu các nội dung nâng cao như: nhận dạng giọng nói, xử lý hình ảnh phức tạp, hỗ trợ đa ngôn ngữ ở quy mô lớn hoặc việc tinh chỉnh mô hình sâu (Fine-Tuning) do những hạn chế về mặt tài nguyên phần cứng và thời gian thực hiện.
 
 \section{Đối tượng sử dụng}
 
-Hệ thống được xây dựng dành cho hai nhóm người dùng chính:
+Hệ thống được thiết kế hướng tới hai nhóm người dùng chính yếu:
 
 \subsection*{Sinh viên}
-
-\begin{itemize}
-	\item Đặt câu hỏi về nội dung môn học.
-	\item Tra cứu thông tin nhanh.
-	\item So sánh kết quả giữa RAG và Fine-Tuning.
-	\item Xem báo cáo đánh giá chất lượng câu trả lời.
-\end{itemize}
+Đây là nhóm đối tượng sử dụng trọng tâm của hệ thống. Sinh viên có thể trực tiếp đặt các câu hỏi về nội dung môn học và tra cứu thông tin nhanh chóng từ kho tài liệu. Bên cạnh đó, người dùng am hiểu kỹ thuật cũng có thể sử dụng tính năng thử nghiệm để tự cấu hình, so sánh kết quả sinh câu trả lời giữa các chiến lược RAG khác nhau, từ đó xem xét báo cáo đánh giá và tìm ra mô hình phù hợp nhất cho môn học của mình.
 
 \subsection*{Quản trị viên}
-
-\begin{itemize}
-	\item Quản lý tài liệu môn học.
-	\item Cập nhật nguồn dữ liệu.
-	\item Theo dõi trạng thái hệ thống.
-	\item Xem báo cáo thống kê.
-	\item Quản lý quá trình Fine-Tuning.
-\end{itemize}
+Quản trị viên đóng vai trò duy trì và mở rộng kho tri thức của hệ thống. Các quyền hạn chính bao gồm: tải lên và quản lý danh sách tài liệu môn học, theo dõi trạng thái phân mảnh và embedding của tài liệu, cũng như xem các báo cáo thống kê chung để đánh giá tổng quan về chất lượng hoạt động của hệ thống Chatbot.
 
 \section{Phương pháp nghiên cứu}
 
-Đề tài được thực hiện theo các bước:
-
+Quá trình thực hiện đề tài được diễn ra tuần tự qua các giai đoạn:
 \begin{enumerate}
-	
-	\item Khảo sát các mô hình Chatbot hiện nay.
-	
-	\item Nghiên cứu kiến trúc RAG.
-	
-	\item Nghiên cứu phương pháp Fine-Tuning.
-	
-	\item Thiết kế kiến trúc hệ thống.
-	
-	\item Xây dựng Backend bằng FastAPI.
-	
-	\item Xây dựng Frontend bằng React.
-	
-	\item Tích hợp ChromaDB và Embedding.
-	
-	\item Kiểm thử chức năng.
-	
-	\item Đánh giá kết quả.
-	
+	\item Khảo sát thực trạng và các mô hình Chatbot hỗ trợ học tập hiện có trên thị trường.
+	\item Nghiên cứu chuyên sâu về kiến trúc Retrieval-Augmented Generation (RAG) và các kỹ thuật liên quan (Chunking, Vector Database, Prompt Engineering).
+	\item Thiết kế kiến trúc tổng thể cho hệ thống và phác thảo giao diện người dùng.
+	\item Lập trình và xây dựng Backend với FastAPI, tích hợp ChromaDB và các API của LLM.
+	\item Lập trình Frontend với ReactJS và kết nối hoàn chỉnh các luồng dữ liệu.
+	\item Xây dựng bộ test, tiến hành kiểm thử chức năng và chạy Benchmark đánh giá hiệu năng.
+	\item Tổng hợp số liệu, phân tích kết quả và hoàn thiện tài liệu báo cáo.
 \end{enumerate}
 
 \section{Cấu trúc báo cáo}
 
-Báo cáo gồm các chương sau:
-
+Tài liệu báo cáo đồ án được cấu trúc thành các chương như sau:
 \begin{itemize}
-	
-	\item Chương 1: Giới thiệu.
-	
-	\item Chương 2: Cơ sở lý thuyết và công nghệ sử dụng.
-	
-	\item Chương 3: Đặc tả yêu cầu phần mềm (SRS).
-	
-	\item Chương 4: Thiết kế hệ thống.
-	
-	\item Chương 5: Triển khai hệ thống.
-	
-	\item Chương 6: Kiểm thử và đánh giá.
-	
-	\item Chương 7: Quản lý dự án bằng Jira và GitHub.
-	
-	\item Chương 8: Kết luận và hướng phát triển.
-	
+	\item Chương 1: Lời cảm ơn.
+	\item Chương 2: Giới thiệu (Tổng quan về đề tài, lý do, mục tiêu và phạm vi).
+	\item Chương 3: Cơ sở lý thuyết và công nghệ sử dụng.
+	\item Chương 4: Đặc tả yêu cầu phần mềm (SRS).
+	\item Chương 5: Thiết kế hệ thống (Kiến trúc, biểu đồ lớp, cơ sở dữ liệu).
+	\item Chương 6: Triển khai hệ thống (Luồng xử lý RAG và các module).
+	\item Chương 7: Kiểm thử và đánh giá (Thử nghiệm Benchmark và phân tích số liệu).
+	\item Chương 8: Quản lý dự án bằng Jira và GitHub.
+	\item Chương 9: Kết luận và hướng phát triển.
 \end{itemize}
-

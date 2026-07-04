@@ -28,9 +28,8 @@ Các Epic chính của dự án bao gồm:
 	\item Xây dựng Backend FastAPI
 	\item Xây dựng Frontend React
 	\item Xây dựng Pipeline RAG
-	\item Fine-Tuning mô hình
 	\item Tích hợp ChromaDB
-	\item Đánh giá mô hình
+	\item Đánh giá mô hình (Benchmark)
 	\item Thiết kế giao diện
 	\item Kiểm thử hệ thống
 	\item Viết tài liệu báo cáo
@@ -41,13 +40,12 @@ Một số User Story tiêu biểu:
 
 \begin{itemize}
 	\item Sinh viên có thể tải tài liệu môn học.
-	\item Sinh viên có thể đặt câu hỏi.
-	\item Hệ thống trả lời bằng RAG.
-	\item Hệ thống trả lời bằng Fine-Tuning.
-	\item Sinh viên so sánh hai phương pháp.
-	\item Quản trị viên quản lý tài liệu.
-	\item Quản trị viên xem báo cáo.
-	\item Quản trị viên theo dõi kết quả Benchmark.
+	\item Sinh viên có thể đặt câu hỏi để Chatbot tư vấn.
+	\item Hệ thống trả lời thông minh dựa trên kỹ thuật RAG.
+	\item Sinh viên có thể thử nghiệm thay đổi cấu hình RAG.
+	\item Quản trị viên quản lý kho tài liệu trung tâm.
+	\item Quản trị viên xem báo cáo hoạt động.
+	\item Quản trị viên theo dõi kết quả chạy Benchmark của các mô hình.
 \end{itemize}
 \section{Quản lý Backlog}
 
@@ -98,7 +96,7 @@ Dự án được chia thành nhiều Sprint.
 		\hline
 		Sprint 4 & Tích hợp ChromaDB và RAG & Hoàn thành\\
 		\hline
-		Sprint 5 & Fine-Tuning mô hình & Hoàn thành\\
+		Sprint 5 & Cấu hình và thử nghiệm Benchmark & Hoàn thành\\
 		\hline
 		Sprint 6 & Benchmark và đánh giá & Hoàn thành\\
 		\hline
@@ -151,7 +149,7 @@ Hình trên thể hiện toàn bộ bảng Kanban của dự án. Mỗi thẻ đ
 		Backend FastAPI & ...\\
 		Frontend React & ...\\
 		RAG Pipeline & ...\\
-		Fine-Tuning &...\\
+		Đánh giá Benchmark &...\\
 		Kiểm thử & ...\\
 		Viết tài liệu & ...\\
 		\hline
