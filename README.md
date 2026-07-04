@@ -41,17 +41,33 @@ Xây dựng một hệ thống chatbot thông minh có khả năng trích xuất
 ---
 
 ## 3. Thiết Kế Hệ Thống & Sơ Đồ
-
-*(Lưu ý: Vui lòng thay thế đường dẫn hình ảnh `[link-hinh-...]` bằng file ảnh thực tế của nhóm hoặc kéo thả ảnh vào file)*
-
 ### 3.1 Các Sơ Đồ Thiết Kế
-Toàn bộ các sơ đồ chi tiết của dự án bao gồm:
-- Sơ đồ Use Case
-- Sơ đồ Kiến trúc (RAG & Fine-tuning)
-- Biểu đồ Lớp (Class Diagram)
-- Biểu đồ Thực thể Kết hợp (ERD)
+### 3.1.1 Sơ đồ Use Case
+![Sơ đồ Use Case](doc/SRS/use-case.png)
 
-👉 **[Xem chi tiết 4 sơ đồ này tại file SRS.md](./SRS.md)**
+**Giải thích luồng hoạt động:** 
+Sinh viên có thể gửi câu hỏi, hệ thống sẽ sử dụng RAG hoặc Fine-tuning (nếu có) để truy xuất dữ liệu từ các tài liệu môn học và gọi mô hình AI bên ngoài để sinh câu trả lời. Quản trị viên chịu trách nhiệm quản lý tài liệu, cập nhật nguồn dữ liệu và xem các báo cáo phân tích hiệu suất hệ thống.
+
+---
+
+### 3.1.2 Sơ đồ Kiến trúc Tổng Quan
+![Sơ đồ Kiến trúc](doc/SRS/context-diagram.png)
+
+**Giải thích luồng hoạt động:**
+Tài liệu sau khi được người dùng tải lên sẽ qua quá trình Ingestion (Cắt nhỏ - Chunking và nhúng vector - Embedding), sau đó lưu vào ChromaDB. Khi user đặt câu hỏi, hệ thống truy vấn vector tương đồng (Retrieval), kết hợp với Prompt và gửi cho LLM (GPT-4o-mini/Gemini). Câu trả lời cuối cùng được trả về cho người dùng và lưu vào MySQL.
+
+---
+
+### 3.1.3 Biểu đồ Lớp (Class Diagram)
+![Sơ đồ Lớp](doc/SRS/class-diagram.png)
+
+---
+
+### 3.1.4 Biểu đồ Thực thể Kết hợp (ERD)
+![Sơ đồ ERD](doc/SRS/erd.png)
+
+**Giải thích luồng hoạt động (áp dụng chung cho Database):**
+Cơ sở dữ liệu lưu trữ 6 thực thể chính: `Users` (Người dùng), `Documents` (Tài liệu), `Questions` (Câu hỏi), `Answers` (Câu trả lời), `Experiments` (Cấu hình thử nghiệm), và `Evaluations` (Kết quả đánh giá). Mỗi `Answer` liên kết với một `Question` và có thể có nhiều `Evaluations` đi kèm để đo đạc chất lượng câu trả lời.
 
 ### 3.2 Sơ đồ Luồng Đánh giá & Benchmark
 *(Phần này sử dụng quy trình đã định nghĩa trong mã nguồn và RAGAS)*
@@ -60,18 +76,17 @@ Toàn bộ các sơ đồ chi tiết của dự án bao gồm:
 Dữ liệu test (`testset.json`) chứa 50+ câu hỏi và ground truth. Hệ thống sẽ chạy RAG cho từng câu hỏi, thu thập câu trả lời và context. Sau đó dùng thư viện RAGAS để tính toán 4 chỉ số (Accuracy, Relevancy, Faithfulness, Latency) và lưu vào database để phục vụ Dashboard.
 
 ---
-
 ## 4. Quá Trình Kiểm Thử & Đánh Giá
 
 ### 4.1 Kiểm thử các chức năng chính
 - **Upload Tài liệu:** Kéo thả file PDF, hệ thống phân tách thành công các chunks và lưu vector. 
-  - *(Chèn Screenshot upload tài liệu)*
+  - ![Upload tài liệu](doc/BaoCaoLaTex/images/test_2.jpg)
 - **Tương tác Chatbot:** Đặt câu hỏi về nội dung vừa upload, chatbot phản hồi đúng trọng tâm, trích dẫn chuẩn xác trang/văn bản nguồn. 
-  - *(Chèn Screenshot màn hình chat)*
+  - ![màn hình chat](doc/BaoCaoLaTex/images/test_1.jpg)
 - **Chạy Benchmark:** Chạy tập test 50 câu hỏi thành công không bị lỗi timeout. 
-  - *(Chèn Screenshot trang experiments)*
+  - ![Benchmark](doc/BaoCaoLaTex/images/test_3.jpg)
 - **Dashboard:** Biểu đồ vẽ đúng dữ liệu so sánh giữa các model. 
-  - *(Chèn Screenshot dashboard)*
+  - ![Biểu đồ dashboard](image-3.png)
 
 ### 4.2 Đánh giá và So sánh Mô hình (Kết quả Nghiên cứu)
 - **So sánh RAG vs Fine-tuning (RQ Chính):** RAG chứng minh được tính hiệu quả cao hơn trong bối cảnh học tập do chi phí thấp, không cần train lại model, dữ liệu cập nhật tức thời từ tài liệu PDF tải lên. Độ chính xác thông tin (Faithfulness) của RAG cao do dựa trên ngữ cảnh thực tế.
@@ -113,4 +128,4 @@ Trang web sẽ chạy tại: `http://localhost:5173`
 ### 6.2 Quản lý Task với Jira
 - Dự án được quản lý theo mô hình Agile/Scrum trên Jira.
 - **Epics:** Chia làm các phần chính như Backend (Database, RAG Core, Benchmark), Frontend (Chat, Dashboard), Báo cáo & Nghiên cứu.
-- **Tasks & Trạng thái:** Công việc của 7 thành viên được chia nhỏ thành các Sub-tasks. Các thẻ được di chuyển qua các cột `To Do` -> `In Progress` -> `Done` sát với tiến độ code trên GitHub. Đảm bảo mọi thành viên (Hiển Đạt, Liên Hưng, Danh Ninh, Văn Khánh, Hoàng Dũng, Thành Đạt, Kiều Trinh) đều hoàn thành đúng KPI được giao.
+- **Tasks & Trạng thái:** Công việc của 7 thành viên được chia nhỏ thành các Sub-tasks. Các thẻ được di chuyển qua các cột `To Do` -> `In Progress` -> `Done` sát với tiến độ code trên GitHub.
