@@ -1,0 +1,60 @@
+\chapter{Kết luận và hướng phát triển}
+
+\section{Kết quả đạt được}
+
+Sau quá trình nghiên cứu, thiết kế và triển khai, nhóm đã xây dựng thành công hệ thống ChatBot hỗ trợ học tập tích hợp hai phương pháp RAG (Retrieval-Augmented Generation) và Fine-Tuning. Hệ thống cho phép người dùng đặt câu hỏi liên quan đến tài liệu môn học, đồng thời thực hiện so sánh chất lượng câu trả lời giữa hai phương pháp xử lý nhằm đánh giá hiệu quả của từng mô hình.
+
+Các mục tiêu chính của đề tài đều đã được hoàn thành, bao gồm:
+
+\begin{itemize}
+	\item Xây dựng Backend bằng FastAPI.
+	\item Phát triển giao diện người dùng bằng React.
+	\item Tích hợp cơ sở dữ liệu vector ChromaDB phục vụ truy xuất tài liệu.
+	\item Xây dựng quy trình RAG từ tài liệu PDF.
+	\item Xây dựng mô hình Fine-Tuning để trả lời câu hỏi.
+	\item Thực hiện Benchmark và đánh giá hiệu suất.
+	\item Hoàn thiện tài liệu SRS bằng LaTeX.
+	\item Quản lý tiến độ dự án bằng Jira và GitHub.
+\end{itemize}
+
+Kết quả kiểm thử cho thấy hệ thống hoạt động ổn định, tốc độ phản hồi nhanh và đáp ứng được các yêu cầu chức năng đã đặt ra trong tài liệu đặc tả.	
+\section{Ưu điểm}
+
+Hệ thống đạt được nhiều ưu điểm nổi bật:
+
+\begin{itemize}
+	\item Kiến trúc phân tầng rõ ràng, dễ bảo trì.
+	\item Tốc độ truy xuất dữ liệu nhanh nhờ ChromaDB.
+	\item Dễ dàng bổ sung tài liệu mới.
+	\item So sánh trực tiếp giữa RAG và Fine-Tuning.
+	\item Giao diện thân thiện với người dùng.
+	\item Dễ mở rộng thêm mô hình AI khác.
+	\item Toàn bộ quá trình phát triển được quản lý bằng Jira và GitHub.
+\end{itemize}
+\section{Hạn chế}
+
+Mặc dù đã đạt được các mục tiêu đề ra nhưng hệ thống vẫn còn một số hạn chế:
+
+\begin{itemize}
+	\item Bộ dữ liệu Fine-Tuning chưa lớn.
+	\item Chưa hỗ trợ nhiều định dạng tài liệu ngoài PDF.
+	\item Chưa triển khai trên môi trường Cloud.
+	\item Chưa tích hợp cơ chế xác thực người dùng.
+	\item Chưa tối ưu cho lượng người dùng đồng thời lớn.
+\end{itemize}
+\section{Hướng phát triển}
+
+Trong tương lai, hệ thống có thể được mở rộng theo các hướng sau:
+
+\begin{itemize}
+	\item Tích hợp nhiều mô hình LLM như GPT, Claude, Gemini, Llama.
+	\item Hỗ trợ nhiều môn học khác nhau.
+	\item Tự động cập nhật tài liệu học tập.
+	\item Tối ưu thuật toán Chunking và Embedding.
+	\item Bổ sung Dashboard thống kê trực quan.
+	\item Triển khai trên Cloud.
+	\item Tích hợp cơ chế đăng nhập và phân quyền.
+	\item Xây dựng phiên bản Mobile.
+\end{itemize}\section{Tổng kết}
+
+Đề tài đã hoàn thành việc xây dựng hệ thống ChatBot hỗ trợ học tập ứng dụng công nghệ RAG và Fine-Tuning. Hệ thống không chỉ hỗ trợ hỏi đáp dựa trên tài liệu môn học mà còn cho phép đánh giá, phân tích và so sánh hiệu quả giữa hai phương pháp xử lý ngôn ngữ hiện đại. Kết quả đạt được là nền tảng để tiếp tục nghiên cứu và phát triển các hệ thống trợ lý học tập thông minh trong tương lai.
