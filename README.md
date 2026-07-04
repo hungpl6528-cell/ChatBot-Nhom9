@@ -86,7 +86,7 @@ Dữ liệu test (`testset.json`) chứa 50+ câu hỏi và ground truth. Hệ t
 - **Chạy Benchmark:** Chạy tập test 50 câu hỏi thành công không bị lỗi timeout. 
   - ![Benchmark](doc/BaoCaoLaTex/images/test_3.jpg)
 - **Dashboard:** Biểu đồ vẽ đúng dữ liệu so sánh giữa các model. 
-  - ![Biểu đồ dashboard](doc\BaoCaoLaTex\images\test_4.jpg)
+  - ![Biểu đồ dashboard](doc/BaoCaoLaTex/images/test_4.jpg)
 
 ### 4.2 Đánh giá và So sánh Mô hình (Kết quả Nghiên cứu)
 - **So sánh RAG vs Fine-tuning (RQ Chính):** RAG chứng minh được tính hiệu quả cao hơn trong bối cảnh học tập do chi phí thấp, không cần train lại model, dữ liệu cập nhật tức thời từ tài liệu PDF tải lên. Độ chính xác thông tin (Faithfulness) của RAG cao do dựa trên ngữ cảnh thực tế.
