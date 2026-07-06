@@ -11,6 +11,7 @@ import json
 import logging
 import os
 import time
+import traceback
 from datetime import datetime
 from typing import List, Dict, Any, Optional
 
@@ -25,7 +26,7 @@ from app.use_cases.evaluation import compute_scores
 logger = logging.getLogger(__name__)
 
 TESTSET_PATH = os.path.join(
-    os.path.dirname(__file__), "..", "..", "..", "..", "testset.json"
+    os.path.dirname(__file__), "..", "..", "..", "doc", "testset.json"
 )
 
 
@@ -124,7 +125,7 @@ async def run_benchmark(
             logger.info(f"  Q: {question_text[:50]}... → overall={scores['overall_score']}")
 
         except Exception as e:
-            logger.error(f"[Benchmark] Question failed: {e}")
+            logger.error(f"[Benchmark] Question failed: {e}\n{traceback.format_exc()}")
             continue
 
     # Aggregate

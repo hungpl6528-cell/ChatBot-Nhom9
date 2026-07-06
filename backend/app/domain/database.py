@@ -17,7 +17,7 @@ engine = create_engine(
     DATABASE_URL,
     pool_pre_ping=True,
     pool_recycle=3600,
-    echo=settings.APP_ENV == "development",
+    echo=False,  # Disable echo to prevent UnicodeEncodeError in Windows console
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

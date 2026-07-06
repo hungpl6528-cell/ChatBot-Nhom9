@@ -1,0 +1,22 @@
+[
+  {
+    "question": "Thương mại điện tử là gì?",
+    "ground_truth": "Thương mại điện tử (e-commerce) là việc mua bán sản phẩm hay dịch vụ thông qua internet và các mạng máy tính."
+  },
+  {
+    "question": "Mô hình B2B là gì?",
+    "ground_truth": "B2B (Business to Business) là mô hình giao dịch thương mại giữa các doanh nghiệp với nhau."
+  },
+  {
+    "question": "Các lợi ích của thương mại điện tử?",
+    "ground_truth": "Lợi ích của thương mại điện tử bao gồm: tiết kiệm chi phí, mở rộng thị trường, phục vụ khách hàng 24/7 và cá nhân hóa trải nghiệm mua sắm."
+  },
+  {
+    "question": "Thanh toán điện tử là gì?",
+    "ground_truth": "Thanh toán điện tử là việc thanh toán tiền thông qua các phương tiện điện tử thay vì sử dụng tiền mặt."
+  },
+  {
+    "question": "SEO đóng vai trò gì trong TMĐT?",
+    "ground_truth": "SEO giúp website TMĐT xuất hiện cao hơn trên kết quả tìm kiếm, thu hút nhiều lượng truy cập tự nhiên và khách hàng tiềm năng."
+  }
+]

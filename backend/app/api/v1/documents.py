@@ -7,7 +7,7 @@ import tempfile
 from typing import Optional, List
 
 from fastapi import (
-    APIRouter, Depends, HTTPException, UploadFile, File, Form, status
+    APIRouter, Depends, HTTPException, UploadFile, File, Form, status, BackgroundTasks
 )
 from sqlalchemy.orm import Session
 
@@ -26,6 +26,7 @@ MAX_FILE_SIZE = 50 * 1024 * 1024  # 50 MB
 
 @router.post("/upload", response_model=dict, status_code=202)
 async def upload_document(
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
     mon_hoc: Optional[str] = Form(None),
     embedding_model: str = Form(default="text-embedding-3-small"),
@@ -34,40 +35,61 @@ async def upload_document(
     current_user: Optional[models.User] = Depends(get_current_user_optional),
 ):
     """
-    Upload PDF hoặc DOCX → tự động chunk, embed, lưu vào ChromaDB.
+    Upload PDF hoặc DOCX → tự động chunk, embed, lưu vào ChromaDB (chạy nền).
     """
-    # Validate extension
     ext = os.path.splitext(file.filename or "")[1].lower()
     if ext not in ALLOWED_EXTENSIONS:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Chỉ hỗ trợ {', '.join(ALLOWED_EXTENSIONS)}"
-        )
+        raise HTTPException(status_code=422, detail=f"Chỉ hỗ trợ {', '.join(ALLOWED_EXTENSIONS)}")
 
-    # Read file bytes
     file_bytes = await file.read()
     if len(file_bytes) > MAX_FILE_SIZE:
-        raise HTTPException(
-            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
-            detail="File quá lớn (tối đa 50MB)"
-        )
+        raise HTTPException(status_code=413, detail="File quá lớn (tối đa 50MB)")
 
-    user_id = current_user.id if current_user else 1  # default user if no auth
+    user_id = current_user.id if current_user else 1
 
-    result = await ingest_document(
-        db=db,
-        file_bytes=file_bytes,
-        filename=file.filename,
-        user_id=user_id,
-        mon_hoc=mon_hoc,
-        embedding_model_name=embedding_model,
-        chunking_strategy=chunking_strategy,
+    # Tạo record pending trước để giao diện có thể hiển thị trạng thái "Đang xử lý"
+    from app.repositories.mysql_repo import DocumentRepository
+    doc = DocumentRepository(db).create(user_id=user_id, ten_file=file.filename, mon_hoc=mon_hoc)
+    DocumentRepository(db).update_status(doc.id, "processing")
+
+    # Đẩy tác vụ xử lý file vào background để trả về HTTP response ngay lập tức
+    background_tasks.add_task(
+        _ingest_background_task,
+        doc.id,
+        file_bytes,
+        file.filename,
+        user_id,
+        mon_hoc,
+        embedding_model,
+        chunking_strategy
     )
 
     return {
-        "message": "Tài liệu đã được xử lý thành công",
-        **result,
+        "message": "Tài liệu đang được xử lý ngầm",
+        "document_id": doc.id,
     }
+
+async def _ingest_background_task(doc_id: int, file_bytes: bytes, filename: str, user_id: int, mon_hoc: str, embedding_model: str, chunking_strategy: str):
+    from app.domain.database import SessionLocal
+    from app.use_cases.ingestion import ingest_document
+    from app.repositories.mysql_repo import DocumentRepository
+    db = SessionLocal()
+    try:
+        # Pass doc_id to ingest_document to avoid creating another row
+        await ingest_document(
+            db=db,
+            file_bytes=file_bytes,
+            filename=filename,
+            user_id=user_id,
+            mon_hoc=mon_hoc,
+            embedding_model_name=embedding_model,
+            chunking_strategy=chunking_strategy,
+            existing_doc_id=doc_id
+        )
+    except Exception as e:
+        DocumentRepository(db).update_status(doc_id, "error")
+    finally:
+        db.close()
 
 
 @router.get("/", response_model=DocumentListResponse)

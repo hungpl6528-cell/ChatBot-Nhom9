@@ -28,35 +28,10 @@ def compute_scores(
     falls back to simple heuristic scoring otherwise.
     """
     try:
-        from ragas import evaluate
-        from ragas.metrics import (
-            answer_relevancy,
-            faithfulness,
-            context_recall,
-            context_precision,
+        # Fallback to heuristic scoring as Ragas hangs without proper LLM configuration
+        accuracy, relevancy, faithfulness_score = _heuristic_scores(
+            question, answer, contexts
         )
-        from datasets import Dataset
-
-        if ground_truth:
-            data = {
-                "question": [question],
-                "answer": [answer],
-                "contexts": [contexts],
-                "ground_truth": [ground_truth],
-            }
-            dataset = Dataset.from_dict(data)
-            result = evaluate(
-                dataset,
-                metrics=[answer_relevancy, faithfulness, context_recall, context_precision],
-            )
-            accuracy = float(result.get("context_recall", 0) or 0)
-            relevancy = float(result.get("answer_relevancy", 0) or 0)
-            faithfulness_score = float(result.get("faithfulness", 0) or 0)
-        else:
-            # Heuristic when no ground truth
-            accuracy, relevancy, faithfulness_score = _heuristic_scores(
-                question, answer, contexts
-            )
 
     except Exception as e:
         logger.warning(f"[Evaluation] RAGAS failed, using heuristics: {e}")

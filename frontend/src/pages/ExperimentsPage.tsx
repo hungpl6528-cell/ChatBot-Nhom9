@@ -11,12 +11,16 @@ const CHUNKING_OPTIONS = [
 ]
 
 const EMBEDDING_OPTIONS = [
-  { value: 'text-embedding-3-small', label: '🤖 OpenAI text-embedding-3-small' },
+  { value: 'models/gemini-embedding-2', label: '✨ Google gemini-embedding-2 (Đề xuất)' },
+  { value: 'models/text-embedding-004', label: '🌟 Google text-embedding-004' },
   { value: 'multilingual-e5-base', label: '🌐 multilingual-e5-base (Free)' },
   { value: 'BAAI/bge-m3', label: '🔓 BAAI/bge-m3 (Free)' },
 ]
 
 const AI_MODEL_OPTIONS = [
+  { value: 'gemini-2.5-flash', label: '✨ Gemini 2.5 Flash (Đề xuất)' },
+  { value: 'gemini-2.5-pro', label: '🌟 Gemini 2.5 Pro' },
+  { value: 'gemini-2.0-flash', label: '🚀 Gemini 2.0 Flash' },
   { value: 'gpt-4o-mini', label: '⚡ GPT-4o Mini' },
   { value: 'gpt-4o', label: '🧠 GPT-4o' },
   { value: 'gpt-3.5-turbo', label: '🚀 GPT-3.5 Turbo' },
@@ -42,8 +46,8 @@ const ExperimentsPage: React.FC = () => {
     ten_thu_nghiem: '',
     mo_ta: '',
     chunking_strategy: 'recursive',
-    embedding_model: 'text-embedding-3-small',
-    ai_model: 'gpt-4o-mini',
+    embedding_model: 'models/gemini-embedding-2',
+    ai_model: 'gemini-2.5-flash',
   })
   const [formError, setFormError] = useState<string | null>(null)
   const [successMsg, setSuccessMsg] = useState<string | null>(null)
@@ -83,7 +87,7 @@ const ExperimentsPage: React.FC = () => {
       const created = await experimentService.createExperiment(form)
       setExperiments(prev => [created, ...prev])
       setSuccessMsg(`✅ Đã tạo thử nghiệm "${created.ten_thu_nghiem}" thành công!`)
-      setForm({ ten_thu_nghiem: '', mo_ta: '', chunking_strategy: 'recursive', embedding_model: 'text-embedding-3-small', ai_model: 'gpt-4o-mini' })
+      setForm({ ten_thu_nghiem: '', mo_ta: '', chunking_strategy: 'recursive', embedding_model: 'models/gemini-embedding-2', ai_model: 'gemini-2.5-flash' })
       setActiveTab('list')
     } catch (err: any) {
       setFormError(err.response?.data?.detail || 'Không thể tạo thử nghiệm')
@@ -220,7 +224,7 @@ const ExperimentsPage: React.FC = () => {
                   id="exp-ai-model"
                   label="AI Model (LLM)"
                   options={AI_MODEL_OPTIONS}
-                  value={form.ai_model || 'gpt-4o-mini'}
+                  value={form.ai_model || 'gemini-2.5-flash'}
                   onChange={e => setForm(f => ({ ...f, ai_model: e.target.value }))}
                 />
               </div>
@@ -232,7 +236,7 @@ const ExperimentsPage: React.FC = () => {
                   {[
                     { label: 'Chunking', value: form.chunking_strategy, icon: '✂️' },
                     { label: 'Embedding', value: form.embedding_model.split('/').pop() || form.embedding_model, icon: '🔢' },
-                    { label: 'LLM', value: form.ai_model || 'gpt-4o-mini', icon: '🤖' },
+                    { label: 'LLM', value: form.ai_model || 'gemini-2.5-flash', icon: '🤖' },
                   ].map(item => (
                     <div key={item.label} className="text-center">
                       <p className="text-2xl mb-1">{item.icon}</p>

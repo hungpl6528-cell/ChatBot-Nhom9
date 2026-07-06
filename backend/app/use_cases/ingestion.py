@@ -49,14 +49,15 @@ class NativeGeminiEmbeddings(Embeddings):
 
     def embed_documents(self, texts: List[str]) -> List[List[float]]:
         results = []
-        for text in texts:
+        batch_size = 100
+        for i in range(0, len(texts), batch_size):
+            batch = texts[i:i+batch_size]
             res = genai.embed_content(
                 model=self.model_name,
-                content=text,
+                content=batch,
                 task_type='retrieval_document'
             )
-            results.append(res['embedding'])
-            time.sleep(0.2) # Avoid rate limits
+            results.extend(res['embedding'])
         return results
 
     def embed_query(self, text: str) -> List[float]:
@@ -204,6 +205,7 @@ async def ingest_document(
     mon_hoc: Optional[str],
     embedding_model_name: str = "models/gemini-embedding-2",
     chunking_strategy: str = "recursive",
+    existing_doc_id: Optional[int] = None,
 ) -> dict:
     """
     Full ingestion pipeline.
@@ -215,8 +217,14 @@ async def ingest_document(
     doc_repo = DocumentRepository(db)
     vector_repo = VectorRepository()
 
-    # 1. Create document record (pending)
-    doc = doc_repo.create(user_id=user_id, ten_file=filename, mon_hoc=mon_hoc)
+    # 1. Create or get document record
+    if existing_doc_id:
+        doc = doc_repo.get_by_id(existing_doc_id)
+        if not doc:
+            raise ValueError("Document ID not found")
+    else:
+        doc = doc_repo.create(user_id=user_id, ten_file=filename, mon_hoc=mon_hoc)
+        
     doc_repo.update_status(doc.id, "processing")
 
     try:
