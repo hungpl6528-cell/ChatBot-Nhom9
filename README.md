@@ -10,7 +10,7 @@ Hệ thống ChatBot Nhóm 9 là một ứng dụng hỗ trợ học tập thôn
 - **Frontend:** React.js, Tailwind CSS, Recharts, Axios, React Router.
 - **Backend:** FastAPI (Python), SQLAlchemy, LangChain, RAGAS (đánh giá).
 - **Cơ sở dữ liệu:** MySQL (lưu dữ liệu có cấu trúc), ChromaDB (Vector Database lưu embeddings).
-- **Quản lý & DevOps:** Git, GitHub, Jira, Postman.
+- **Quản lý & DevOps:** GitHub, Jira
 
 ---
 
