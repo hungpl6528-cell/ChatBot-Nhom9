@@ -1,0 +1,86 @@
+\chapter{ĐẶC TẢ YÊU CẦU PHẦN MỀM (SRS)}
+
+\section{Giới thiệu}
+
+Tài liệu Đặc tả yêu cầu phần mềm (Software Requirements Specification - SRS) mô tả đầy đủ và chi tiết các yêu cầu đối với hệ thống Chatbot hỗ trợ học tập ứng dụng công nghệ Retrieval-Augmented Generation (RAG). Tài liệu này đóng vai trò là cơ sở cốt lõi để nhóm phát triển tiến hành thiết kế kiến trúc, lập trình, kiểm thử và đánh giá mức độ hoàn thiện của hệ thống ở các giai đoạn sau.
+
+Các yêu cầu được xây dựng dựa trên nhu cầu thực tế của sinh viên trong việc tra cứu, tổng hợp tài liệu học tập một cách nhanh chóng và chính xác. Đồng thời, hệ thống cũng đáp ứng mục tiêu nghiên cứu thông qua việc cung cấp công cụ Benchmark để đánh giá, so sánh hiệu quả giữa các chiến lược phân mảnh dữ liệu (Chunking) và các mô hình biểu diễn từ (Embedding Models) khác nhau.
+
+\section{Mục đích}
+
+Mục đích chính của tài liệu SRS bao gồm: xác định đầy đủ và chính xác các chức năng mà hệ thống Chatbot cần cung cấp cho từng nhóm người dùng; định nghĩa rõ ràng các yêu cầu phi chức năng (như hiệu năng, bảo mật, khả năng mở rộng); làm cơ sở vững chắc cho giai đoạn thiết kế cơ sở dữ liệu và giao diện; hỗ trợ quá trình kiểm thử và nghiệm thu sản phẩm cuối cùng; đồng thời giúp giảm thiểu tối đa sự sai lệch giữa kỳ vọng ban đầu và quá trình phát triển thực tế.
+
+\section{Phạm vi hệ thống}
+
+Hệ thống Chatbot được xây dựng nhằm mục đích chính là hỗ trợ sinh viên đặt câu hỏi liên quan đến nội dung môn học và nhận lại các câu trả lời chính xác, được trích xuất trực tiếp từ nguồn tài liệu tham khảo đáng tin cậy. Để thực hiện điều này, hệ thống tập trung triển khai chuyên sâu mô hình Retrieval-Augmented Generation (RAG).
+
+Bên cạnh chức năng hỏi đáp, hệ thống còn cung cấp môi trường Sandbox và Benchmark cho phép người dùng kỹ thuật hoặc quản trị viên có thể: thử nghiệm các cấu hình RAG khác nhau (thay đổi Chunking, thay đổi Embedding Model, thay đổi LLM), quản lý hệ thống tài liệu động, theo dõi các chỉ số đánh giá (như Accuracy, Relevancy, Faithfulness theo chuẩn RAGAS) và xuất báo cáo thống kê trực quan.
+
+\section{Các tác nhân của hệ thống}
+
+Hệ thống được thiết kế để tương tác với các tác nhân (Actors) chính bao gồm:
+\begin{itemize}
+	\item Sinh viên (Người dùng cuối).
+	\item Quản trị viên (Admin).
+	\item Mô hình AI (Gemini, Open Source LLMs).
+	\item Kho tài liệu môn học (Vector Database).
+\end{itemize}
+
+\section{Biểu đồ ngữ cảnh (Context Diagram)}
+
+Biểu đồ Context mô tả hệ thống ở mức độ trừu tượng cao nhất, thể hiện rõ ràng các tác nhân bên ngoài và các luồng dữ liệu chính được trao đổi với hệ thống Chatbot.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{images/context.png}
+	\caption{Biểu đồ Context của hệ thống}
+	\label{fig:context_srs}
+\end{figure}
+
+Trong biểu đồ Context, hệ thống Chatbot (Backend FastAPI) đóng vai trò trung tâm tiếp nhận, điều phối và xử lý mọi yêu cầu từ các tác nhân bên ngoài. Sinh viên gửi câu hỏi về môn học, hệ thống tiếp nhận và trả về câu trả lời tự nhiên kèm theo nguồn tài liệu trích dẫn rõ ràng. Kho tài liệu cung cấp dữ liệu thô (PDF, DOCX), sau đó được hệ thống xử lý (Chunking, Embedding) để phục vụ quá trình tìm kiếm. Mô hình AI (như Gemini 2.5 Flash) đóng vai trò bên thứ ba, nhận Prompt đã được bơm ngữ cảnh từ hệ thống và sinh ra câu trả lời cuối cùng. Quản trị viên tương tác với hệ thống để quản lý dữ liệu, theo dõi trạng thái máy chủ và xem xét các biểu đồ phân tích hiệu suất (Dashboard).
+
+\section{Biểu đồ Use Case}
+
+Biểu đồ Use Case mô tả chi tiết toàn bộ các chức năng cụ thể mà hệ thống cung cấp, được phân chia theo quyền hạn của từng tác nhân.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{images/usecase.png}
+	\caption{Biểu đồ Use Case}
+	\label{fig:usecase}
+\end{figure}
+
+Biểu đồ Use Case cho thấy hệ thống phân tách rõ rệt quyền hạn giữa hai nhóm người dùng chính là Sinh viên và Quản trị viên. 
+
+Đối với Sinh viên, các chức năng chính bao gồm: gửi câu hỏi để Chatbot tư vấn dựa trên cơ chế RAG; xem lại lịch sử hội thoại; thử nghiệm thay đổi các thông số cấu hình RAG (Top-K, Chunking Strategy, Embedding Model) ngay trong giao diện Chat Sandbox; và xem báo cáo đánh giá chất lượng câu trả lời.
+
+Đối với Quản trị viên, quyền hạn được mở rộng bao gồm: tải lên hàng loạt tài liệu học tập mới; quản lý, cập nhật hoặc xóa tài liệu trong kho tri thức ChromaDB; theo dõi trạng thái xử lý (Ingestion) của tài liệu; quản lý danh sách người dùng; thực thi các kịch bản Benchmark quy mô lớn; và phân tích dữ liệu hiệu năng thông qua Dashboard thống kê tổng quan.
+
+\section{Yêu cầu chức năng}
+
+Để đáp ứng các quy trình nghiệp vụ đã đề ra, hệ thống cần hoàn thiện các yêu cầu chức năng sau:
+\begin{enumerate}
+	\item Cho phép người dùng nhập câu hỏi văn bản thông qua giao diện Chat.
+	\item Tự động trích xuất các đoạn văn bản (chunks) liên quan nhất từ ChromaDB dựa trên thuật toán tìm kiếm vector.
+	\item Sinh câu trả lời thông minh, tự nhiên bằng công nghệ RAG, đồng thời hiển thị danh sách tài liệu trích dẫn tương ứng.
+	\item Lưu trữ và hiển thị lịch sử hội thoại, cho phép người dùng tiếp tục ngữ cảnh trò chuyện.
+	\item Cung cấp tính năng Upload tài liệu PDF/DOCX, tự động phân mảnh và tạo Vector Embedding.
+	\item Cung cấp module Benchmark cho phép chạy thử nghiệm với nhiều cấu hình Chunking và Embedding khác nhau.
+	\item Tự động tính toán các chỉ số đánh giá (Accuracy, Relevancy, Latency, v.v.) và xuất báo cáo Radar Chart.
+	\item Cho phép quản trị viên quản lý danh sách tài liệu và trạng thái hoạt động của hệ thống.
+\end{enumerate}
+
+\section{Yêu cầu phi chức năng}
+
+Bên cạnh chức năng, hệ thống cần đảm bảo các tiêu chuẩn về chất lượng (Phi chức năng) như sau:
+\begin{enumerate}
+	\item \textbf{Hiệu năng (Performance)}: Thời gian phản hồi (Latency) đối với một câu hỏi thông thường cần được duy trì dưới 5 giây. Hệ thống phải đảm bảo truy xuất ChromaDB và gọi API của LLM trong thời gian tối ưu nhất.
+	\item \textbf{Độ chính xác (Accuracy \& Faithfulness)}: Hệ thống bắt buộc phải ưu tiên sử dụng tri thức từ tài liệu môn học để trả lời. Nếu thông tin không có trong tài liệu, Chatbot cần thông báo thay vì tự bịa ra thông tin sai lệch (Hallucination).
+	\item \textbf{Khả năng mở rộng (Scalability)}: Hệ thống phải được thiết kế rời rạc (Decoupled), cho phép dễ dàng thêm mới các loại mô hình Embedding hoặc thay đổi LLM (ví dụ chuyển từ Gemini sang GPT) mà không làm gián đoạn mã nguồn hiện tại.
+	\item \textbf{Bảo mật (Security)}: Cần có cơ chế phân quyền rõ ràng, chỉ quản trị viên mới được phép thao tác xóa, cập nhật tài liệu và can thiệp vào dữ liệu Benchmark cốt lõi của hệ thống.
+	\item \textbf{Khả dụng (Availability)}: Kiến trúc Backend FastAPI phải đảm bảo khả năng xử lý bất đồng bộ (Asynchronous) tốt để phục vụ nhiều sinh viên tra cứu cùng lúc trong các đợt ôn thi cao điểm.
+\end{enumerate}
+
+\section{Kết luận chương}
+
+Chương này đã làm rõ đặc tả yêu cầu phần mềm của hệ thống Chatbot hỗ trợ học tập dựa trên RAG. Bằng việc phân tích mục đích, xác định rõ các tác nhân, xây dựng sơ đồ Context, sơ đồ Use Case và liệt kê các yêu cầu chức/phi chức năng, nhóm đã có một định hướng kỹ thuật nhất quán. Đây chính là tiền đề quan trọng nhất để tiến hành thiết kế kiến trúc hệ thống chi tiết ở chương tiếp theo.

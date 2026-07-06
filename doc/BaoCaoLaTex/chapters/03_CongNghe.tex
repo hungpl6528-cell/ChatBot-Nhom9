@@ -1,0 +1,55 @@
+\chapter{CƠ SỞ LÝ THUYẾT VÀ CÔNG NGHỆ SỬ DỤNG}
+\section{Trí tuệ nhân tạo (Artificial Intelligence)}
+
+Trí tuệ nhân tạo (Artificial Intelligence - AI) là lĩnh vực nghiên cứu thuộc khoa học máy tính nhằm xây dựng các hệ thống có khả năng mô phỏng trí thông minh của con người. AI cho phép máy tính thực hiện nhiều nhiệm vụ như học tập, suy luận, lập kế hoạch, xử lý ngôn ngữ tự nhiên, nhận dạng hình ảnh và đưa ra quyết định.
+
+Trong những năm gần đây, AI phát triển mạnh nhờ sự gia tăng về năng lực tính toán, dữ liệu lớn (Big Data) và các mô hình học sâu (Deep Learning). AI đã được ứng dụng rộng rãi trong nhiều lĩnh vực như giáo dục, tài chính, thương mại điện tử, y tế, giao thông và dịch vụ khách hàng. Trong đề tài này, AI đóng vai trò là nền tảng giúp hệ thống Chatbot hiểu câu hỏi của người dùng, truy xuất thông tin từ tài liệu và sinh ra câu trả lời phù hợp.
+
+\section{Mô hình ngôn ngữ lớn (Large Language Model)}
+
+Large Language Model (LLM) là các mô hình học sâu được huấn luyện trên tập dữ liệu văn bản rất lớn nhằm hiểu và sinh ngôn ngữ tự nhiên. Các LLM hiện đại sở hữu năng lực vượt trội trong việc thực hiện đa dạng các tác vụ xử lý ngôn ngữ như trả lời câu hỏi phức tạp, tóm tắt văn bản dài, dịch thuật đa ngôn ngữ, sinh mã nguồn lập trình, phân tích cấu trúc tài liệu, và duy trì ngữ cảnh hội thoại tự nhiên với người dùng.
+
+Các mô hình tiêu biểu và phổ biến hiện nay bao gồm họ GPT của OpenAI, Llama của Meta, Gemini của Google, Claude của Anthropic, hay Qwen của Alibaba. Trong khuôn khổ dự án này, LLM (điển hình như Gemini) được tích hợp để đóng vai trò là bộ não xử lý cuối cùng, chịu trách nhiệm tổng hợp các luồng thông tin thô được cung cấp từ hệ thống truy xuất (Retrieval) và tạo ra câu trả lời tự nhiên, chính xác, bám sát với ngữ cảnh mà người dùng yêu cầu.
+
+\section{Retrieval-Augmented Generation (RAG)}
+
+Retrieval-Augmented Generation (RAG) là một mô hình kiến trúc tiên tiến kết hợp sức mạnh của hệ thống truy xuất thông tin (Information Retrieval) và khả năng sinh văn bản của mô hình ngôn ngữ lớn (Generation). Thay vì chỉ hoàn toàn phụ thuộc vào những kiến thức tĩnh đã được đóng gói sẵn trong trọng số của LLM (kiến thức tiền huấn luyện), RAG cho phép hệ thống chủ động tìm kiếm và trích xuất các đoạn tài liệu có liên quan trực tiếp từ một cơ sở dữ liệu động, trước khi gửi bối cảnh đó vào mô hình AI để xử lý.
+
+Quy trình hoạt động cốt lõi của RAG được diễn ra tuần tự qua các bước: đầu tiên, người dùng gửi một câu hỏi hoặc yêu cầu hệ thống. Câu hỏi này ngay lập tức được mã hóa thành các Vector đa chiều (Vector Embedding) thông qua mô hình Embedding. Hệ thống sau đó tiến hành tìm kiếm và trích xuất các đoạn văn bản (chunks) có độ tương đồng ngữ nghĩa cao nhất từ cơ sở dữ liệu vector (như ChromaDB). Cuối cùng, các đoạn tài liệu này được chèn vào Prompt dưới dạng ngữ cảnh bổ sung và gửi cho LLM. Kết quả là LLM sẽ sinh ra câu trả lời dựa trên lượng thông tin vừa được cung cấp. Cơ chế này không chỉ giúp câu trả lời luôn bám sát tài liệu môn học, đảm bảo tính minh bạch thông qua việc trích dẫn nguồn, mà còn giải quyết triệt để hiện tượng "ảo giác" (Hallucination) — khi AI tự bịa ra thông tin sai lệch do thiếu kiến thức nền.
+
+\section{Embedding}
+
+Embedding là kỹ thuật cốt lõi trong xử lý ngôn ngữ tự nhiên, đóng vai trò chuyển đổi các đoạn văn bản (từ vựng, câu, hoặc đoạn văn) thành các vector số học có hàng trăm hoặc hàng nghìn chiều. Khác với các phương pháp tìm kiếm từ khóa truyền thống (như BM25 hay TF-IDF) chỉ dựa trên sự trùng khớp mặt chữ, các vector Embedding có khả năng phản ánh sâu sắc ý nghĩa ngữ nghĩa (semantics) và mối liên hệ ngữ cảnh của văn bản.
+
+Quá trình Embedding trong hệ thống được thiết kế bao gồm việc đọc và bóc tách nội dung từ tài liệu PDF/DOCX, sau đó áp dụng các thuật toán chia nhỏ văn bản (Chunking) để tạo ra các đoạn thông tin có kích thước phù hợp. Tiếp theo, hệ thống sử dụng các mô hình Embedding (như Google Gemini Embedding hoặc BAAI/bge-m3) để sinh Vector Embedding cho từng đoạn, rồi lưu trữ toàn bộ vào ChromaDB. Khi người dùng đặt câu hỏi, hệ thống sẽ thực hiện biến đổi câu hỏi thành Vector tương ứng và tính toán độ đo khoảng cách (phổ biến nhất là Cosine Similarity) để xác định các đoạn văn bản có ý nghĩa gần nhất.
+
+\section{Cơ sở dữ liệu Vector (ChromaDB)}
+
+ChromaDB là một hệ quản trị cơ sở dữ liệu Vector mã nguồn mở, được thiết kế chuyên biệt để lưu trữ và truy vấn tốc độ cao đối với các dữ liệu Embedding. Khác với cơ sở dữ liệu quan hệ truyền thống (RDBMS) lưu trữ dữ liệu dưới dạng bảng và tìm kiếm bằng SQL, ChromaDB lưu trữ các Vector đa chiều đại diện cho ngữ nghĩa của văn bản.
+
+Trong kiến trúc của hệ thống Chatbot, ChromaDB đóng vai trò như một bộ nhớ dài hạn, đảm nhận các tác vụ quan trọng như lưu trữ hàng triệu Vector sinh ra từ tài liệu, thực hiện tìm kiếm nội dung tương đồng (Similarity Search) với độ trễ thấp, và truy xuất nhanh chóng các đoạn văn bản nguyên gốc (metadata) để cung cấp cho mô hình AI. Việc ứng dụng ChromaDB không chỉ tối ưu tốc độ phản hồi của Chatbot mà còn mang lại khả năng mở rộng (scalability) linh hoạt khi số lượng tài liệu môn học gia tăng trong tương lai.
+
+\section{Backend Framework (FastAPI)}
+
+FastAPI là một Web Framework hiện đại, hiệu năng cao dùng để phát triển các ứng dụng RESTful API bằng ngôn ngữ lập trình Python. FastAPI nổi bật nhờ khả năng hỗ trợ lập trình bất đồng bộ (Asynchronous Programming) tối ưu hóa tốc độ xử lý I/O, tự động sinh tài liệu API (Swagger/Redoc) trực quan dựa trên chuẩn OpenAPI, và tính tương thích cao với các thư viện Machine Learning, AI vốn chủ yếu được viết bằng Python.
+
+Trong kiến trúc tổng thể của đề tài, FastAPI đóng vai trò là xương sống (Backend) của toàn bộ hệ thống. FastAPI chịu trách nhiệm tiếp nhận và định tuyến các yêu cầu (Requests) từ phía giao diện Frontend, quản lý tiến trình tải lên và bóc tách tài liệu PDF, giao tiếp với ChromaDB để thực hiện các luồng truy xuất RAG, gọi API của các mô hình ngôn ngữ lớn (LLM), và điều phối các tác vụ tính toán chuyên sâu cho module Benchmark.
+
+\section{Frontend Framework (ReactJS)}
+
+ReactJS là thư viện JavaScript mã nguồn mở được phát triển bởi Meta, chuyên dùng để xây dựng các giao diện người dùng (User Interface) theo hướng Single Page Application (SPA). Ưu điểm cốt lõi của React nằm ở kiến trúc dựa trên Component (thành phần hóa), cho phép tái sử dụng code hiệu quả, cùng với cơ chế Virtual DOM giúp cập nhật và hiển thị dữ liệu theo thời gian thực một cách vô cùng mượt mà.
+
+Đối với hệ thống này, ReactJS được ứng dụng để phát triển toàn bộ giao diện tương tác phía người dùng (Frontend). React giúp xây dựng màn hình Chat Sandbox trực quan, tích hợp các công cụ cấu hình linh hoạt cho mô hình AI, thiết kế các bảng điều khiển (Dashboard) quản lý tài liệu, và đặc biệt là vẽ các biểu đồ trực quan (như Radar Chart) để hiển thị kết quả đánh giá (Benchmark) và phân tích hiệu năng của các cấu hình RAG khác nhau.
+
+\section{Kiến trúc tổng thể hệ thống}
+
+Hình \ref{fig:kientruc} mô tả kiến trúc tổng thể của hệ thống Chatbot hỗ trợ học tập, được thiết kế theo mô hình Client-Server.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.95\textwidth]{images/context.png}
+	\caption{Kiến trúc tổng thể hệ thống}
+	\label{fig:kientruc}
+\end{figure}
+
+Kiến trúc hệ thống được chia làm năm thành phần chính: Người dùng (Sinh viên), Quản trị viên, Hệ thống Chatbot (Backend), Kho tài liệu môn học (Vector Database), và Mô hình AI (LLM \& Embedding). Sinh viên tương tác với hệ thống qua giao diện Web để gửi câu hỏi; Backend sẽ tiếp nhận, sử dụng kỹ thuật RAG để trích xuất thông tin liên quan từ Kho tài liệu, kết hợp với Mô hình AI để sinh câu trả lời và phản hồi lại cho người dùng. Trong khi đó, Quản trị viên sử dụng hệ thống để cập nhật nguồn tài liệu mới, theo dõi trạng thái, và đánh giá hiệu suất thông qua công cụ Benchmark. Nhờ kiến trúc phân tách rõ ràng này, dữ liệu được quản lý tập trung, quy trình xử lý AI được tối ưu, giúp hệ thống dễ dàng bảo trì và mở rộng trong tương lai.
