@@ -309,3 +309,13 @@
 - [ ] Tổng kết sprint cuối trước khi nộp
 
 ---
+
+
+### ĐÁNH GIÁ MỨC ĐỘ ĐÓNG GÓP TỪNG THÀNH VIÊN SAU KHI HOÀN THIỆN 
+1. PHAN LIÊN HƯNG
+2. NGUYỄN CÔNG NINH DANH
+3. NGUYỂN HIỂN ĐẠT
+4. ĐÀO VĂN KHÁNH
+5. PHẠM HOÀNG DŨNG
+6. LƯƠNG THÀNH ĐẠT
+7. TRẦN THỊ KIỀU TRINH
