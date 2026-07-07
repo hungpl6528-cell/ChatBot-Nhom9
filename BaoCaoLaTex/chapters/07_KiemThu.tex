@@ -21,83 +21,56 @@ Kết quả cho thấy các chức năng đều hoạt động ổn định và 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{images/test_3}
-	\caption{Chạy Benchmark}
+	\caption{Danh Sách Các Thử Nghiệm (Testing Benchmark)}
 	\label{fig:benchmark}
 \end{figure}
-Module Benchmark cho phép cấu hình:
 
+Quy mô thử nghiệm: Hình ảnh cho thấy hệ thống đang thiết lập giới hạn kiểm thử ở mức 20 câu hỏi ngẫu nhiên (trích xuất từ tập testset.json) cho mỗi lần chạy Benchmark.
+Các mô hình đánh giá: Giao diện hiển thị danh sách 4 thử nghiệm đã được thực hiện thành công (trạng thái "Finish"), bao gồm:
 \begin{itemize}
-	\item Chunking Strategy
-	\item Embedding Model
-	\item AI Model
-	\item Bộ câu hỏi kiểm thử
+	\item BAAI Review: Sử dụng mô hình nhúng BAAI/bge-m3 kết hợp gemini-2.5-flash.
+	\item E5-Base Module Evaluation: Sử dụng mô hình nhúng multilingual-e5-base kết hợp gemini-2.5-flash.
+	\item Gemini Model Review: Sử dụng giải pháp đồng bộ với mô hình nhúng models/gemini-embedding-2 kết hợp gemini-2.5-flash.
+	content...
 \end{itemize}
 
-Sau khi chạy Benchmark, hệ thống tự động tính toán các chỉ số:
+Đánh giá chung: Hệ thống Benchmark hoạt động trơn tru, các thuật toán chia nhỏ dữ liệu (recursive) và pipeline đánh giá đều hoàn tất mà không gặp lỗi. Điều này cho phép tạo ra một bộ dữ liệu đối chiếu công bằng giữa các thuật toán Embedding.
 
-\begin{itemize}
-	\item Accuracy
-	\item Relevancy
-	\item Faithfulness
-	\item Latency
-	\item Overall Score
-\end{itemize}
-
-Nhờ đó nhóm có thể đánh giá khách quan chất lượng của từng cấu hình RAG.
-\section{Dashboard thống kê}
+\section{Tổng Quan Hiệu Suất Và Biểu Đồ So Sánh (Dashboard Metrics)}
 
 Sau khi hoàn thành Benchmark, toàn bộ kết quả được tổng hợp lên Dashboard.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{images/test_4}
-	\caption{Dashboard tổng quan}
+	\caption{Tổng Quan Hiệu Suất Và Biểu Đồ So Sánh (Dashboard Metrics)}
 	\label{fig:dashboard}
 \end{figure}
-Dashboard hiển thị các chỉ số:
 
-\begin{itemize}
-	\item Số lượng tài liệu
-	\item Số lượng câu hỏi
-	\item Accuracy
-	\item Relevancy
-	\item Faithfulness
-	\item Latency
-\end{itemize}
+Chỉ số hệ thống tổng thể: Dữ liệu RAG hiện tại được nạp từ 5 tài liệu, đã thực hiện kiểm tra với 29 câu hỏi. Trung bình trên toàn bộ hệ thống, thời gian phản hồi (TB Time) lên tới 54.40 giây, cùng các chỉ số chất lượng khá thấp: Accuracy TB (24.3%), Relevancy TB (20.1%) và Faithfulness TB (28.4%). Tuy nhiên, các chỉ số trung bình bị kéo xuống do sự yếu kém của một số mô hình cụ thể.
 
-Ngoài các chỉ số tổng quan, hệ thống còn hiển thị biểu đồ so sánh giúp người dùng dễ dàng quan sát sự khác biệt giữa các lần Benchmark.
+Biểu đồ Compare Metrics (Cột): Quan sát trực quan cho thấy thử nghiệm "Gemini Model Review" (cột ngoài cùng bên trái) áp đảo hoàn toàn với 3 thanh màu vươn tới mức 100% cho cả Accuracy, Relevancy và Faithfulness. Trong khi đó, các thử nghiệm dùng mô hình BAAI hay E5-Base đều có các chỉ số này nằm sát đáy (dưới 10%).
 
-\section{So sánh kết quả Benchmark}
+Biểu đồ Latency và Overall Score (Đường): Đường màu vàng (Overall Score) của mô hình Gemini đạt đỉnh ở mốc 100%, trong khi đường màu xanh (Latency - độ trễ) ở mức thấp nhất. Ngược lại, các mô hình còn lại có điểm tổng thể cực thấp nhưng thời gian phản hồi (Latency) lại vọt lên rất cao, cho thấy sự kém hiệu quả trong cả tốc độ lẫn chất lượng.
+
+\section{Đánh Giá Chi Tiết Từng Mô Hình (Radar và Comparison Table)}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{images/test_5}
-	\caption{Biểu đồ Radar và bảng xếp hạng}
+	\caption{Đánh Giá Chi Tiết Từng Mô Hình (Radar và Comparison Table)}
 	\label{fig:radar}
 \end{figure}
-Radar Chart được sử dụng để trực quan hóa các chỉ số:
 
-\begin{itemize}
-	\item Accuracy
-	\item Relevancy
-	\item Faithfulness
-	\item Overall Score
-\end{itemize}
+Biểu đồ Radar Comparison: Khẳng định lại sự vượt trội tuyệt đối của Gemini Model Review khi vùng đa giác bao phủ toàn bộ giới hạn cao nhất của biểu đồ (Accuracy, Relevancy, Faithfulness và Overall). Các mô hình khác gần như tụt lại ở tâm biểu đồ, cho thấy sự mất cân đối nghiêm trọng về khả năng trích xuất thông tin đúng ngữ cảnh.
 
-Bảng xếp hạng bên dưới hiển thị đầy đủ:
+Bảng xếp hạng chi tiết (Experiments Comparison Table):
+Vị trí Số 1 (Gemini Model Review): Đạt 100% ở mọi tiêu chí đánh giá chất lượng câu trả lời. Đặc biệt, tốc độ phản hồi vô cùng ấn tượng, chỉ mất 2,674 ms (gần 2.7 giây), đạt điểm tổng thể 99.2%.
 
-\begin{itemize}
-	\item Tên thử nghiệm
-	\item Chunking
-	\item Embedding
-	\item Accuracy
-	\item Relevancy
-	\item Faithfulness
-	\item Latency
-	\item Overall Score
-\end{itemize}
+Nhóm xếp sau (BAAI và E5-Base): Kết quả cực kỳ thấp. Điểm số độ liên quan (Relevancy) thậm chí rơi xuống 0%, nghĩa là bộ phận tìm kiếm ngữ nghĩa (Retrieval) của các mô hình này không hoạt động hiệu quả với tập dữ liệu Tiếng Việt hiện tại. Đồng thời, thời gian phản hồi của chúng cũng rất chậm, dao động từ 8,875 ms đến 11,621 ms, dẫn đến điểm tổng thể (Overall) chỉ dao động ở mức 7% - 9%.
 
-Các chỉ số được tính toán tự động sau mỗi lần Benchmark và hỗ trợ nhóm lựa chọn cấu hình tối ưu.
+Kết luận rút ra: Việc sử dụng trọn bộ hệ sinh thái của Google (Gemini Embedding + Gemini LLM) mang lại hiệu quả vượt bậc và sẵn sàng ứng dụng thực tế, trong khi các mô hình Open-source hiện tại cần được fine-tune hoặc cấu hình lại sâu hơn nếu muốn sử dụng.
+
 \section{Đánh giá kết quả}
 
 Sau quá trình kiểm thử, hệ thống đã đáp ứng đầy đủ các yêu cầu chức năng được đặc tả trong tài liệu SRS.
