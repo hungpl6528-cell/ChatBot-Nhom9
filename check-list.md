@@ -311,7 +311,7 @@
 ---
 
 
-### ĐÁNH GIÁ MỨC ĐỘ ĐÓNG GÓP TỪNG THÀNH VIÊN SAU KHI HOÀN THIỆN 
+### ĐÁNH GIÁ MỨC ĐỘ ĐÓNG GÓP TỪNG THÀNH VIÊN SAU KHI HOÀN THIỆN ( THEO THỨ TỰ TỪ TRÊN XUỐNG )
 1. PHAN LIÊN HƯNG
 2. NGUYỄN CÔNG NINH DANH
 3. NGUYỂN HIỂN ĐẠT
