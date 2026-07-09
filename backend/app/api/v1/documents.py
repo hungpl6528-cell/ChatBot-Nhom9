@@ -52,7 +52,23 @@ async def upload_document(
             detail="File quá lớn (tối đa 50MB)"
         )
 
-    user_id = current_user.id if current_user else 1  # default user if no auth
+    if current_user:
+        user_id = current_user.id
+    else:
+        # Ensure default user (id=1) exists to satisfy FK constraint
+        from app.domain.models import User as UserModel
+        import bcrypt
+        default_user = db.query(UserModel).filter(UserModel.id == 1).first()
+        if not default_user:
+            hashed = bcrypt.hashpw(b"admin123", bcrypt.gensalt()).decode()
+            default_user = UserModel(
+                id=1, ten="Admin", email="admin@chatbot.local",
+                mat_khau=hashed, is_active=True
+            )
+            db.add(default_user)
+            db.commit()
+            db.refresh(default_user)
+        user_id = 1
 
     result = await ingest_document(
         db=db,

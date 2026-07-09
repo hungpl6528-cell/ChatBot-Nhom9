@@ -36,8 +36,26 @@ app.add_middleware(
 # ─────────────────────────────────────────────
 @app.on_event("startup")
 async def on_startup():
-    """Create database tables on first run."""
-    create_tables()
+    """Create database tables on first run — retry if MySQL not ready yet."""
+    import time
+    import logging
+    logger = logging.getLogger(__name__)
+    max_retries = 10
+    for attempt in range(1, max_retries + 1):
+        try:
+            create_tables()
+            logger.info("Database tables ready.")
+            return
+        except Exception as e:
+            if attempt < max_retries:
+                logger.warning(
+                    f"MySQL chưa sẵn sàng (lần {attempt}/{max_retries}), "
+                    f"thử lại sau 3s... Lỗi: {e}"
+                )
+                time.sleep(3)
+            else:
+                logger.error(f"Không thể kết nối MySQL sau {max_retries} lần thử: {e}")
+                raise
 
 
 # ─────────────────────────────────────────────
