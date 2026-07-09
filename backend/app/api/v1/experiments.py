@@ -44,6 +44,13 @@ def list_experiments(db: Session = Depends(get_db)):
     return ExperimentRepository(db).list_all()
 
 
+@router.delete("/failed", response_model=dict)
+def delete_failed_experiments(db: Session = Depends(get_db)):
+    """Xóa tất cả thử nghiệm có trạng thái 'failed'."""
+    count = ExperimentRepository(db).delete_by_status("failed")
+    return {"message": f"Đã xóa {count} thử nghiệm thất bại", "deleted_count": count}
+
+
 @router.get("/{exp_id}", response_model=ExperimentResponse)
 def get_experiment(exp_id: int, db: Session = Depends(get_db)):
     """Chi tiết một thử nghiệm."""
@@ -95,3 +102,23 @@ async def _run_benchmark_task(exp_id: int, max_questions: int):
 def get_evaluations(exp_id: int, db: Session = Depends(get_db)):
     """Kết quả đánh giá của một thử nghiệm."""
     return EvaluationRepository(db).get_by_experiment(exp_id)
+
+
+@router.post("/{exp_id}/stop", response_model=dict)
+def stop_experiment(exp_id: int, db: Session = Depends(get_db)):
+    """
+    Dừng thử nghiệm đang chạy bằng cách đánh dấu trạng thái thành 'failed'.
+    Background task sẽ kiểm tra trạng thái và tự dừng.
+    """
+    repo = ExperimentRepository(db)
+    exp = repo.get_by_id(exp_id)
+    if not exp:
+        raise HTTPException(status_code=404, detail="Thử nghiệm không tồn tại")
+    if exp.trang_thai != "running":
+        raise HTTPException(
+            status_code=409,
+            detail=f"Thử nghiệm không đang chạy (trạng thái hiện tại: {exp.trang_thai})"
+        )
+    from datetime import datetime
+    repo.update_status(exp_id, "failed", completed_at=datetime.utcnow())
+    return {"message": f"Đã dừng thử nghiệm '{exp.ten_thu_nghiem}'", "experiment_id": exp_id}

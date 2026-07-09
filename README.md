@@ -103,7 +103,7 @@ Mở terminal, di chuyển vào thư mục backend và chạy server FastAPI:
 cd C:\BÁO CÁO NHÓM\ChatBot-Nhom9-hoanchinh\backend
 # Kích hoạt môi trường ảo (nếu có)
 # venv\Scripts\activate
-uvicorn app.api.main:app --reload --port 8000
+python -m uvicorn app.api.main:app --reload --port 8001
 ```
 API Docs sẽ có tại: `http://localhost:8000/docs`
 

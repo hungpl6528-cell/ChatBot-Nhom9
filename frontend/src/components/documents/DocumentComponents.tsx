@@ -87,9 +87,10 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ onUploadSuccess }) =
   }
 
   const EMBEDDING_OPTIONS = [
-    { value: 'models/gemini-embedding-2', label: 'Google gemini-embedding-2' },
-    { value: 'multilingual-e5-base', label: 'multilingual-e5-base (Free)' },
-    { value: 'BAAI/bge-m3', label: 'BAAI/bge-m3 (Free)' },
+    { value: 'models/gemini-embedding-2', label: '✨ Google gemini-embedding-2 (Đề xuất)' },
+    { value: 'models/text-embedding-004', label: '🌟 Google text-embedding-004' },
+    { value: 'multilingual-e5-base', label: '🌐 multilingual-e5-base (Free)' },
+    { value: 'BAAI/bge-m3', label: '🔓 BAAI/bge-m3 (Free - cần tải ~2GB)' },
   ]
 
   const CHUNKING_OPTIONS = [

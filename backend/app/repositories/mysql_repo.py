@@ -217,6 +217,28 @@ class ExperimentRepository:
             self.db.refresh(exp)
         return exp
 
+    def delete(self, exp_id: int) -> bool:
+        """Xóa một thử nghiệm theo ID (cascade xóa evaluations)."""
+        exp = self.get_by_id(exp_id)
+        if exp:
+            self.db.delete(exp)
+            self.db.commit()
+            return True
+        return False
+
+    def delete_by_status(self, trang_thai: str) -> int:
+        """Xóa tất cả thử nghiệm theo trạng thái. Trả về số bản ghi đã xóa."""
+        exps = (
+            self.db.query(models.Experiment)
+            .filter(models.Experiment.trang_thai == trang_thai)
+            .all()
+        )
+        count = len(exps)
+        for exp in exps:
+            self.db.delete(exp)
+        self.db.commit()
+        return count
+
 
 # ─────────────────────────────────────────────
 # EVALUATION REPOSITORY

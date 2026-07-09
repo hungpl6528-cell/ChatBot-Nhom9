@@ -74,6 +74,16 @@ export const experimentService = {
   getEvaluations: (id: number) =>
     api.get<Evaluation[]>(`/experiments/${id}/evaluations`).then((r) => r.data),
 
+  deleteFailedExperiments: () =>
+    api
+      .delete<{ message: string; deleted_count: number }>('/experiments/failed')
+      .then((r) => r.data),
+
+  stopExperiment: (id: number) =>
+    api
+      .post<{ message: string; experiment_id: number }>(`/experiments/${id}/stop`)
+      .then((r) => r.data),
+
   getDashboardStats: () =>
     api.get<DashboardStats>('/reports/dashboard').then((r) => r.data),
 

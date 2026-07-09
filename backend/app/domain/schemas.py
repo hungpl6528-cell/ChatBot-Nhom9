@@ -131,6 +131,7 @@ class ExperimentCreate(BaseModel):
     chunking_strategy: Literal["fixed-size", "semantic", "recursive"] = "recursive"
     embedding_model: Literal[
         "models/gemini-embedding-2",
+        "models/text-embedding-004",
         "multilingual-e5-base",
         "BAAI/bge-m3"
     ] = "models/gemini-embedding-2"

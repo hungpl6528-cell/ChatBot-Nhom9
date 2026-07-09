@@ -38,6 +38,8 @@ const ExperimentsPage: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const [creating, setCreating] = useState(false)
   const [runningId, setRunningId] = useState<number | null>(null)
+  const [stoppingId, setStoppingId] = useState<number | null>(null)
+  const [deletingFailed, setDeletingFailed] = useState(false)
   const [activeTab, setActiveTab] = useState<'create' | 'list'>('list')
   const [maxQuestions, setMaxQuestions] = useState(20)
 
@@ -119,6 +121,38 @@ const ExperimentsPage: React.FC = () => {
     }
   }
 
+  const handleStop = async (expId: number, name: string) => {
+    if (!confirm(`Dừng thử nghiệm "${name}"?`)) return
+    setStoppingId(expId)
+    try {
+      await experimentService.stopExperiment(expId)
+      setExperiments(prev =>
+        prev.map(e => e.id === expId ? { ...e, trang_thai: 'failed' } : e)
+      )
+      if (runningId === expId) setRunningId(null)
+    } catch (err: any) {
+      alert(err.response?.data?.detail || 'Lỗi khi dừng thử nghiệm')
+    } finally {
+      setStoppingId(null)
+    }
+  }
+
+  const handleDeleteFailed = async () => {
+    const failedCount = experiments.filter(e => e.trang_thai === 'failed').length
+    if (failedCount === 0) return
+    if (!confirm(`Xóa ${failedCount} thử nghiệm thất bại?`)) return
+    setDeletingFailed(true)
+    try {
+      const result = await experimentService.deleteFailedExperiments()
+      setExperiments(prev => prev.filter(e => e.trang_thai !== 'failed'))
+      setSuccessMsg(`🗑️ ${result.message}`)
+    } catch (err: any) {
+      alert(err.response?.data?.detail || 'Lỗi khi xóa thử nghiệm')
+    } finally {
+      setDeletingFailed(false)
+    }
+  }
+
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       {/* Header */}
@@ -129,9 +163,22 @@ const ExperimentsPage: React.FC = () => {
             Tạo và chạy thử nghiệm so sánh các chiến lược RAG khác nhau
           </p>
         </div>
-        <Button id="create-experiment-btn" onClick={() => setActiveTab('create')}>
-          ＋ Tạo thử nghiệm mới
-        </Button>
+        <div className="flex items-center gap-2 flex-wrap">
+          {experiments.some(e => e.trang_thai === 'failed') && (
+            <Button
+              id="delete-failed-btn"
+              variant="ghost"
+              onClick={handleDeleteFailed}
+              loading={deletingFailed}
+              className="text-red-400 hover:text-red-300 border-red-500/30 hover:border-red-500/50"
+            >
+              🗑️ Xóa thất bại ({experiments.filter(e => e.trang_thai === 'failed').length})
+            </Button>
+          )}
+          <Button id="create-experiment-btn" onClick={() => setActiveTab('create')}>
+            ＋ Tạo thử nghiệm mới
+          </Button>
+        </div>
       </div>
 
       {/* Success msg */}
@@ -295,7 +342,9 @@ const ExperimentsPage: React.FC = () => {
                 key={exp.id}
                 experiment={exp}
                 isRunning={runningId === exp.id}
+                isStopping={stoppingId === exp.id}
                 onRun={() => handleRunBenchmark(exp.id, exp.ten_thu_nghiem)}
+                onStop={() => handleStop(exp.id, exp.ten_thu_nghiem)}
               />
             ))
           )}
@@ -308,8 +357,10 @@ const ExperimentsPage: React.FC = () => {
 const ExperimentCard: React.FC<{
   experiment: Experiment
   isRunning: boolean
+  isStopping: boolean
   onRun: () => void
-}> = ({ experiment: exp, isRunning, onRun }) => {
+  onStop: () => void
+}> = ({ experiment: exp, isRunning, isStopping, onRun, onStop }) => {
   const status = STATUS_CONFIG[exp.trang_thai] || STATUS_CONFIG.pending
   const canRun = exp.trang_thai === 'pending' || exp.trang_thai === 'failed' || exp.trang_thai === 'completed'
 
@@ -347,16 +398,29 @@ const ExperimentCard: React.FC<{
               {new Date(exp.completed_at).toLocaleDateString('vi-VN')}
             </p>
           )}
-          <Button
-            id={`run-exp-${exp.id}`}
-            size="sm"
-            variant={exp.trang_thai === 'completed' ? 'secondary' : 'primary'}
-            onClick={onRun}
-            disabled={!canRun || isRunning}
-            loading={isRunning}
-          >
-            {exp.trang_thai === 'completed' ? '🔁 Chạy lại' : '▶ Chạy Benchmark'}
-          </Button>
+          {exp.trang_thai === 'running' ? (
+            <Button
+              id={`stop-exp-${exp.id}`}
+              size="sm"
+              variant="ghost"
+              onClick={onStop}
+              loading={isStopping}
+              className="text-red-400 hover:text-red-300 border-red-500/30 hover:border-red-500/50"
+            >
+              ⏹ Dừng lại
+            </Button>
+          ) : (
+            <Button
+              id={`run-exp-${exp.id}`}
+              size="sm"
+              variant={exp.trang_thai === 'completed' ? 'secondary' : 'primary'}
+              onClick={onRun}
+              disabled={!canRun || isRunning}
+              loading={isRunning}
+            >
+              {exp.trang_thai === 'completed' ? '🔁 Chạy lại' : '▶ Chạy Benchmark'}
+            </Button>
+          )}
         </div>
       </div>
 
