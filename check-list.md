@@ -275,7 +275,7 @@
 
 ---
 
-## 📋 Quản Lý Jira (NGUYỄN CÔNG NINH DANH / Project Manager)
+## 📋 Quản Lý Jira
 
 ### Khởi Tạo Jira & API Token
 - [ ] Tạo tài khoản Jira tại **atlassian.com**
@@ -313,9 +313,9 @@
 
 ### ĐÁNH GIÁ MỨC ĐỘ ĐÓNG GÓP TỪNG THÀNH VIÊN SAU KHI HOÀN THIỆN ( THEO THỨ TỰ TỪ TRÊN XUỐNG )
 1. PHAN LIÊN HƯNG
-2. NGUYỄN CÔNG NINH DANH
-3. NGUYỂN HIỂN ĐẠT
-4. ĐÀO VĂN KHÁNH
-5. PHẠM HOÀNG DŨNG
-6. LƯƠNG THÀNH ĐẠT
+2. NGUYỄN HIỂN ĐẠT
+3. ĐÀO VĂN KHÁNH
+4. PHẠM HOÀNG DŨNG
+5. LƯƠNG THÀNH ĐẠT
+6. NGUYỄN CÔNG NINH DANH
 7. TRẦN THỊ KIỀU TRINH
