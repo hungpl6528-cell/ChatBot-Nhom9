@@ -1,6 +1,16 @@
 # Báo Cáo Tổng Kết Đồ Án: Hệ Thống ChatBot Học Tập Nhóm 9
 *(Tích hợp RAG & Benchmarking so sánh Chunking Strategies & Embedding Models)*
 
+![Giao diện Tổng quan trang chủ](doc/BaoCaoLaTex/images/ui_home.png)
+
+## Thành viên Nhóm 9
+1. **Phan Liên Hưng (LEADER)** - MSSV: 034206016528
+2. **Nguyễn Ninh Công Danh** - MSSV: 079205006602
+3. **Nguyễn Hiển Đạt** - MSSV: 079206026928
+4. **Đào Văn Khánh** - MSSV: 051206009944
+5. **Phạm Hoàng Dũng** - MSSV: 070205007005
+6. **Lương Thành Đạt** - MSSV: 056206003075
+7. **Trần Thị Kiều Trinh** - MSSV: 066306009531
 ## 1. Giới Thiệu Dự Án & Công Nghệ Sử Dụng
 
 ### 1.1 Giới thiệu dự án
@@ -10,7 +20,7 @@ Hệ thống ChatBot Nhóm 9 là một ứng dụng hỗ trợ học tập thôn
 - **Frontend:** React.js, Tailwind CSS, Recharts, Axios, React Router.
 - **Backend:** FastAPI (Python), SQLAlchemy, LangChain, RAGAS (đánh giá).
 - **Cơ sở dữ liệu:** MySQL (lưu dữ liệu có cấu trúc), ChromaDB (Vector Database lưu embeddings).
-- **Quản lý & DevOps:** GitHub, Jira
+- **Quản lý & DevOps:** Git, GitHub, Jira, Postman.
 
 ---
 
@@ -43,7 +53,7 @@ Xây dựng một hệ thống chatbot thông minh có khả năng trích xuất
 ## 3. Thiết Kế Hệ Thống & Sơ Đồ
 ### 3.1 Các Sơ Đồ Thiết Kế
 ### 3.1.1 Sơ đồ Use Case
-![Sơ đồ Use Case](doc/SRS/use-case.png)
+![Sơ đồ Use Case](doc/BaoCaoLaTex/images/SRS/use-case.png)
 
 **Giải thích luồng hoạt động:** 
 Sinh viên có thể gửi câu hỏi, hệ thống sẽ sử dụng RAG hoặc Fine-tuning (nếu có) để truy xuất dữ liệu từ các tài liệu môn học và gọi mô hình AI bên ngoài để sinh câu trả lời. Quản trị viên chịu trách nhiệm quản lý tài liệu, cập nhật nguồn dữ liệu và xem các báo cáo phân tích hiệu suất hệ thống.
@@ -51,7 +61,7 @@ Sinh viên có thể gửi câu hỏi, hệ thống sẽ sử dụng RAG hoặc 
 ---
 
 ### 3.1.2 Sơ đồ Kiến trúc Tổng Quan
-![Sơ đồ Kiến trúc](doc/SRS/context-diagram.png)
+![Sơ đồ Kiến trúc](doc/BaoCaoLaTex/images/SRS/context-diagram.png)
 
 **Giải thích luồng hoạt động:**
 Tài liệu sau khi được người dùng tải lên sẽ qua quá trình Ingestion (Cắt nhỏ - Chunking và nhúng vector - Embedding), sau đó lưu vào ChromaDB. Khi user đặt câu hỏi, hệ thống truy vấn vector tương đồng (Retrieval), kết hợp với Prompt và gửi cho LLM (GPT-4o-mini/Gemini). Câu trả lời cuối cùng được trả về cho người dùng và lưu vào MySQL.
@@ -59,12 +69,12 @@ Tài liệu sau khi được người dùng tải lên sẽ qua quá trình Inge
 ---
 
 ### 3.1.3 Biểu đồ Lớp (Class Diagram)
-![Sơ đồ Lớp](doc/SRS/class-diagram.png)
+![Sơ đồ Lớp](doc/BaoCaoLaTex/images/SRS/class-diagram.png)
 
 ---
 
 ### 3.1.4 Biểu đồ Thực thể Kết hợp (ERD)
-![Sơ đồ ERD](doc/SRS/erd.png)
+![Sơ đồ ERD](doc/BaoCaoLaTex/images/SRS/erd.png)
 
 **Giải thích luồng hoạt động (áp dụng chung cho Database):**
 Cơ sở dữ liệu lưu trữ 6 thực thể chính: `Users` (Người dùng), `Documents` (Tài liệu), `Questions` (Câu hỏi), `Answers` (Câu trả lời), `Experiments` (Cấu hình thử nghiệm), và `Evaluations` (Kết quả đánh giá). Mỗi `Answer` liên kết với một `Question` và có thể có nhiều `Evaluations` đi kèm để đo đạc chất lượng câu trả lời.
@@ -80,13 +90,13 @@ Dữ liệu test (`testset.json`) chứa 50+ câu hỏi và ground truth. Hệ t
 
 ### 4.1 Kiểm thử các chức năng chính
 - **Upload Tài liệu:** Kéo thả file PDF, hệ thống phân tách thành công các chunks và lưu vector. 
-  - ![Upload tài liệu](doc/BaoCaoLaTex/images/test_2.jpg)
+  - ![Upload tài liệu](doc/BaoCaoLaTex/images/test%20chatbot/test_2.jpg)
 - **Tương tác Chatbot:** Đặt câu hỏi về nội dung vừa upload, chatbot phản hồi đúng trọng tâm, trích dẫn chuẩn xác trang/văn bản nguồn. 
-  - ![màn hình chat](doc/BaoCaoLaTex/images/test_1.jpg)
+  - ![màn hình chat](doc/BaoCaoLaTex/images/test%20chatbot/test_1.jpg)
 - **Chạy Benchmark:** Chạy tập test 50 câu hỏi thành công không bị lỗi timeout. 
-  - ![Benchmark](doc/BaoCaoLaTex/images/test_3.jpg)
+  - ![Benchmark](doc/BaoCaoLaTex/images/test%20chatbot/test_benchmark.jpg)
 - **Dashboard:** Biểu đồ vẽ đúng dữ liệu so sánh giữa các model. 
-  - ![Biểu đồ dashboard](doc/BaoCaoLaTex/images/test_4.jpg)
+  - ![Biểu đồ dashboard](doc/BaoCaoLaTex/images/test%20chatbot/dashboard.jpg)
 
 ### 4.2 Đánh giá và So sánh Mô hình (Kết quả Nghiên cứu)
 - **So sánh RAG vs Fine-tuning (RQ Chính):** RAG chứng minh được tính hiệu quả cao hơn trong bối cảnh học tập do chi phí thấp, không cần train lại model, dữ liệu cập nhật tức thời từ tài liệu PDF tải lên. Độ chính xác thông tin (Faithfulness) của RAG cao do dựa trên ngữ cảnh thực tế.
@@ -100,17 +110,22 @@ Dữ liệu test (`testset.json`) chứa 50+ câu hỏi và ground truth. Hệ t
 ### 5.1 Chạy Backend
 Mở terminal, di chuyển vào thư mục backend và chạy server FastAPI:
 ```bash
-cd C:\BÁO CÁO NHÓM\ChatBot-Nhom9-hoanchinh\backend
-# Kích hoạt môi trường ảo (nếu có)
-# venv\Scripts\activate
-uvicorn app.api.main:app --reload --port 8000
+cd backend
+# Tạo môi trường ảo (khuyến nghị)
+python -m venv venv
+# Kích hoạt môi trường ảo
+# Windows: venv\Scripts\activate
+# Cài đặt thư viện
+pip install -r requirements.txt
+# Chạy server
+python -m uvicorn app.api.main:app --reload --port 8000
 ```
 API Docs sẽ có tại: `http://localhost:8000/docs`
 
 ### 5.2 Chạy Frontend
 Mở một terminal khác, di chuyển vào thư mục frontend và khởi chạy React:
 ```bash
-cd C:\BÁO CÁO NHÓM\ChatBot-Nhom9-hoanchinh\frontend
+cd frontend
 # Cài đặt thư viện nếu chạy lần đầu: npm install
 npm run dev
 ```
@@ -129,3 +144,21 @@ Trang web sẽ chạy tại: `http://localhost:5173`
 - Dự án được quản lý theo mô hình Agile/Scrum trên Jira.
 - **Epics:** Chia làm các phần chính như Backend (Database, RAG Core, Benchmark), Frontend (Chat, Dashboard), Báo cáo & Nghiên cứu.
 - **Tasks & Trạng thái:** Công việc của 7 thành viên được chia nhỏ thành các Sub-tasks. Các thẻ được di chuyển qua các cột `To Do` -> `In Progress` -> `Done` sát với tiến độ code trên GitHub.
+
+---
+
+## 7. Báo cáo (LaTeX)
+
+Báo cáo chi tiết của đồ án được viết bằng LaTeX. File chính nằm tại: `doc/BaoCaoLaTex/main.tex`. Để biên dịch:
+
+```bash
+cd doc/BaoCaoLaTex
+pdflatex main.tex
+pdflatex main.tex
+```
+
+Tài liệu kết quả sẽ là `main.pdf`.
+
+---
+
+**© 2026 Nhóm 9 - Học viện Công nghệ Bưu chính Viễn thông**
