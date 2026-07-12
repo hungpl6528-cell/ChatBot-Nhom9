@@ -1,6 +1,8 @@
 # Báo Cáo Tổng Kết Đồ Án: Hệ Thống ChatBot Học Tập Nhóm 9
 *(Tích hợp RAG & Benchmarking so sánh Chunking Strategies & Embedding Models)*
 
+![Giao diện Tổng quan trang chủ](doc/BaoCaoLaTex/images/ui_home.png)
+
 ## Thành viên Nhóm 9
 1. **Phan Liên Hưng (LEADER)** - MSSV: 034206016528
 2. **Nguyễn Ninh Công Danh** - MSSV: 079205006602
