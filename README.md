@@ -51,7 +51,7 @@ Xây dựng một hệ thống chatbot thông minh có khả năng trích xuất
 ## 3. Thiết Kế Hệ Thống & Sơ Đồ
 ### 3.1 Các Sơ Đồ Thiết Kế
 ### 3.1.1 Sơ đồ Use Case
-![Sơ đồ Use Case](doc/BaoCaoLaTex/images/usecase.png.jpg)
+![Sơ đồ Use Case](doc/BaoCaoLaTex/images/SRS/use-case.png)
 
 **Giải thích luồng hoạt động:** 
 Sinh viên có thể gửi câu hỏi, hệ thống sẽ sử dụng RAG hoặc Fine-tuning (nếu có) để truy xuất dữ liệu từ các tài liệu môn học và gọi mô hình AI bên ngoài để sinh câu trả lời. Quản trị viên chịu trách nhiệm quản lý tài liệu, cập nhật nguồn dữ liệu và xem các báo cáo phân tích hiệu suất hệ thống.
@@ -59,7 +59,7 @@ Sinh viên có thể gửi câu hỏi, hệ thống sẽ sử dụng RAG hoặc 
 ---
 
 ### 3.1.2 Sơ đồ Kiến trúc Tổng Quan
-![Sơ đồ Kiến trúc](doc/BaoCaoLaTex/images/context.png.jpg)
+![Sơ đồ Kiến trúc](doc/BaoCaoLaTex/images/SRS/context-diagram.png)
 
 **Giải thích luồng hoạt động:**
 Tài liệu sau khi được người dùng tải lên sẽ qua quá trình Ingestion (Cắt nhỏ - Chunking và nhúng vector - Embedding), sau đó lưu vào ChromaDB. Khi user đặt câu hỏi, hệ thống truy vấn vector tương đồng (Retrieval), kết hợp với Prompt và gửi cho LLM (GPT-4o-mini/Gemini). Câu trả lời cuối cùng được trả về cho người dùng và lưu vào MySQL.
@@ -67,12 +67,12 @@ Tài liệu sau khi được người dùng tải lên sẽ qua quá trình Inge
 ---
 
 ### 3.1.3 Biểu đồ Lớp (Class Diagram)
-![Sơ đồ Lớp](doc/BaoCaoLaTex/images/class_diagram.png.jpg)
+![Sơ đồ Lớp](doc/BaoCaoLaTex/images/SRS/class-diagram.png)
 
 ---
 
 ### 3.1.4 Biểu đồ Thực thể Kết hợp (ERD)
-![Sơ đồ ERD](doc/BaoCaoLaTex/images/erd.png.jpg)
+![Sơ đồ ERD](doc/BaoCaoLaTex/images/SRS/erd.png)
 
 **Giải thích luồng hoạt động (áp dụng chung cho Database):**
 Cơ sở dữ liệu lưu trữ 6 thực thể chính: `Users` (Người dùng), `Documents` (Tài liệu), `Questions` (Câu hỏi), `Answers` (Câu trả lời), `Experiments` (Cấu hình thử nghiệm), và `Evaluations` (Kết quả đánh giá). Mỗi `Answer` liên kết với một `Question` và có thể có nhiều `Evaluations` đi kèm để đo đạc chất lượng câu trả lời.
@@ -88,13 +88,13 @@ Dữ liệu test (`testset.json`) chứa 50+ câu hỏi và ground truth. Hệ t
 
 ### 4.1 Kiểm thử các chức năng chính
 - **Upload Tài liệu:** Kéo thả file PDF, hệ thống phân tách thành công các chunks và lưu vector. 
-  - ![Upload tài liệu](doc/BaoCaoLaTex/images/test_2.jpg)
+  - ![Upload tài liệu](doc/BaoCaoLaTex/images/test%20chatbot/test_2.jpg)
 - **Tương tác Chatbot:** Đặt câu hỏi về nội dung vừa upload, chatbot phản hồi đúng trọng tâm, trích dẫn chuẩn xác trang/văn bản nguồn. 
-  - ![màn hình chat](doc/BaoCaoLaTex/images/test_1.jpg)
+  - ![màn hình chat](doc/BaoCaoLaTex/images/test%20chatbot/test_1.jpg)
 - **Chạy Benchmark:** Chạy tập test 50 câu hỏi thành công không bị lỗi timeout. 
-  - ![Benchmark](doc/BaoCaoLaTex/images/test_benchmark.jpg)
+  - ![Benchmark](doc/BaoCaoLaTex/images/test%20chatbot/test_benchmark.jpg)
 - **Dashboard:** Biểu đồ vẽ đúng dữ liệu so sánh giữa các model. 
-  - ![Biểu đồ dashboard](doc/BaoCaoLaTex/images/dashboard.jpg)
+  - ![Biểu đồ dashboard](doc/BaoCaoLaTex/images/test%20chatbot/dashboard.jpg)
 
 ### 4.2 Đánh giá và So sánh Mô hình (Kết quả Nghiên cứu)
 - **So sánh RAG vs Fine-tuning (RQ Chính):** RAG chứng minh được tính hiệu quả cao hơn trong bối cảnh học tập do chi phí thấp, không cần train lại model, dữ liệu cập nhật tức thời từ tài liệu PDF tải lên. Độ chính xác thông tin (Faithfulness) của RAG cao do dựa trên ngữ cảnh thực tế.
