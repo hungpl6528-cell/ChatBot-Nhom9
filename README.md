@@ -163,7 +163,7 @@ Tài liệu kết quả sẽ là `main.pdf`.
 
 
 ### ĐÁNH GIÁ MỰC ĐỘ ĐÓNG GÓP CỦA TỪNG THÀNH VIÊN ( THEO THỨ TỰ TỪ TRÊN XUỐNG )
-1. **Phan Liên Hưng (LEADER)** - RAG,LLM
+1. **Phan Liên Hưng (LEADER)** - RAG,LLM,GITHUB
 2. **Nguyễn Hiển Đạt** - DATABASE
 3. **Đào Văn Khánh** - CHAT,DOCS
 4. **Phạm Hoàng Dũng** - DASHBOARD ANALYS
