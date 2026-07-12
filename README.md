@@ -161,4 +161,14 @@ Tài liệu kết quả sẽ là `main.pdf`.
 
 ---
 
-**© 2026 Nhóm 9 - Học viện Công nghệ Bưu chính Viễn thông**
+
+### ĐÁNH GIÁ MỰC ĐỘ ĐÓNG GÓP CỦA TỪNG THÀNH VIÊN ( THEO THỨ TỰ TỪ TRÊN XUỐNG )
+1. **Phan Liên Hưng (LEADER)** - RAG,LLM
+2. **Nguyễn Hiển Đạt** - DATABASE
+3. **Đào Văn Khánh** - CHAT,DOCS
+4. **Phạm Hoàng Dũng** - DASHBOARD ANALYS
+5. **Nguyễn Ninh Công Danh** - BENCHMARK
+6. **Lương Thành Đạt** - KẾT LUẬN , PHÂN TÍCH 
+7. **Trần Thị Kiều Trinh** - KHÔNG ĐÓNG GÓP !
+
+
