@@ -1,2 +1,0 @@
-\contentsline {chapter}{\numberline {1}Giới thiệu}{2}{}%
-\contentsline {section}{\numberline {1.1}Mục tiêu}{2}{}%
