@@ -1,0 +1,158 @@
+%======================================================
+% CHAPTER I: PROJECT INTRODUCTION
+%======================================================
+\chapter{GIỚI THIỆU DỰ ÁN}
+
+\section{Bối cảnh và Động lực}
+
+Trong bối cảnh trí tuệ nhân tạo (Artificial Intelligence -- AI) phát triển mạnh mẽ, các mô hình ngôn ngữ lớn (Large Language Models -- LLM) đang được ứng dụng rộng rãi trong nhiều lĩnh vực như giáo dục, y tế, tài chính và dịch vụ khách hàng. Đặc biệt, các hệ thống Chatbot thông minh đã trở thành công cụ hỗ trợ hiệu quả trong việc tìm kiếm, tổng hợp và trả lời thông tin.
+
+Trong lĩnh vực giáo dục, sinh viên thường gặp khó khăn khi phải tìm kiếm thông tin từ nhiều nguồn tài liệu khác nhau như giáo trình, slide bài giảng, tài liệu PDF hoặc tài liệu tham khảo. Việc đọc và tổng hợp lượng lớn dữ liệu mất nhiều thời gian và đôi khi không mang lại kết quả chính xác. Hiện nay, phần lớn sinh viên sử dụng các công cụ AI phổ biến như ChatGPT hoặc Gemini, tuy nhiên các mô hình này chủ yếu dựa trên dữ liệu tiền huấn luyện và không thể truy cập trực tiếp vào tài liệu nội bộ, giáo trình đặc thù của từng môn học.
+
+Kỹ thuật \textbf{Retrieval-Augmented Generation (RAG)} nổi lên như một giải pháp đột phá, cho phép hệ thống tự động truy xuất trực tiếp các luồng thông tin từ tài liệu do người dùng cung cấp trước khi chuyển giao ngữ cảnh cho mô hình ngôn ngữ để sinh câu trả lời. Cơ chế này đảm bảo tính chính xác, khả năng trích dẫn minh bạch và giảm thiểu hiện tượng ``ảo giác'' (hallucination).
+
+Xuất phát từ nhu cầu đó, nhóm thực hiện đề tài:
+\begin{center}
+  \begin{tcolorbox}[
+    enhanced, colback=blue!5!white, colframe=blue!60!black,
+    boxrule=1pt, arc=4pt, width=0.9\textwidth, halign=center
+  ]
+    {\large\bfseries XÂY DỰNG HỆ THỐNG CHATBOT HỖ TRỢ HỌC TẬP\\[0.2cm]
+    ỨNG DỤNG RETRIEVAL-AUGMENTED GENERATION (RAG)}
+  \end{tcolorbox}
+\end{center}
+
+\section{Mục tiêu Dự án}
+
+Đề tài hướng đến việc giải quyết các bài toán về truy xuất và tổng hợp tri thức với những mục tiêu cụ thể sau:
+
+\begin{enumerate}[label=\arabic*., leftmargin=*, itemsep=4pt]
+  \item Xây dựng hệ thống Chatbot hoàn chỉnh có khả năng hỗ trợ trả lời các câu hỏi chuyên sâu liên quan trực tiếp đến tài liệu môn học của sinh viên.
+  \item Xây dựng quy trình xử lý tài liệu tự động (Ingestion Pipeline) bao gồm: đọc file PDF/DOCX, làm sạch văn bản, phân mảnh dữ liệu (Chunking), tạo vector (Embedding) và lưu trữ trong ChromaDB.
+  \item Tích hợp mô hình ngôn ngữ lớn (LLM -- Gemini 2.5 Flash) thông qua FastAPI để sinh câu trả lời tự nhiên, chính xác dựa trên ngữ cảnh được cung cấp.
+  \item Xây dựng giao diện Web bằng ReactJS nhằm đem lại trải nghiệm tương tác mượt mà, thân thiện cho cả sinh viên và người quản trị.
+  \item Thiết lập module Benchmark để thử nghiệm, đo lường và so sánh hiệu năng giữa các cấu hình RAG khác nhau dựa trên bộ tiêu chí RAGAS (Accuracy, Relevancy, Faithfulness, Latency).
+\end{enumerate}
+
+\section{Phạm vi Hệ thống}
+
+\subsection{Phạm vi trong phạm vi nghiên cứu (In-scope)}
+
+\begin{itemize}[itemsep=3pt]
+  \item Hỗ trợ truy vấn thông tin từ tài liệu văn bản tĩnh (PDF, DOCX).
+  \item Triển khai kỹ thuật RAG kết hợp với cơ sở dữ liệu vector ChromaDB.
+  \item Phát triển kiến trúc Client-Server: Backend FastAPI + Frontend ReactJS.
+  \item Đánh giá hiệu năng các mô hình thông qua bộ tiêu chuẩn định lượng RAGAS.
+  \item Quản lý dự án bằng Jira (Agile Scrum) và kiểm soát mã nguồn bằng GitHub.
+\end{itemize}
+
+\subsection{Ngoài phạm vi nghiên cứu (Out-of-scope)}
+
+\begin{itemize}[itemsep=3pt]
+  \item Nhận dạng giọng nói và xử lý hình ảnh phức tạp.
+  \item Hỗ trợ đa ngôn ngữ ở quy mô lớn (ngoài tiếng Việt và tiếng Anh).
+  \item Tinh chỉnh mô hình sâu (Fine-Tuning LLM) do hạn chế tài nguyên phần cứng.
+  \item Triển khai trên Cloud (AWS, GCP) -- chỉ dừng ở môi trường cục bộ.
+\end{itemize}
+
+\section{Đối tượng Người dùng (System Actors)}
+
+Hệ thống được thiết kế hướng tới hai nhóm người dùng chính:
+
+\begin{table}[H]
+  \centering
+  \caption{Danh sách tác nhân hệ thống}
+  \label{tab:actors}
+  \renewcommand{\arraystretch}{1.4}
+  \begin{tabularx}{\textwidth}{|c|l|X|}
+    \hline
+    \rowcolor{blue!15}
+    \textbf{STT} & \textbf{Tác nhân} & \textbf{Mô tả} \\
+    \hline
+    1 & Sinh viên (Student) & Người dùng cuối, đặt câu hỏi, nhận câu trả lời từ Chatbot, xem lịch sử trò chuyện và cấu hình RAG trong Sandbox. \\
+    \hline
+    2 & Quản trị viên (Admin) & Quản lý kho tài liệu (tải lên, xóa, cập nhật), theo dõi hệ thống, chạy Benchmark và xem Dashboard phân tích. \\
+    \hline
+    3 & Mô hình AI (LLM) & Tác nhân bên ngoài (Gemini 2.5 Flash, Google Embedding, BAAI/bge-m3), sinh câu trả lời từ Prompt được bơm ngữ cảnh. \\
+    \hline
+    4 & Vector Database & ChromaDB lưu trữ và truy xuất các Vector Embedding từ tài liệu. \\
+    \hline
+  \end{tabularx}
+\end{table}
+
+\section{Phương pháp Nghiên cứu}
+
+Quá trình thực hiện đề tài được diễn ra tuần tự qua các giai đoạn:
+
+\begin{enumerate}[label=\textbf{Giai đoạn \arabic*:}, leftmargin=*, itemsep=6pt]
+  \item \textbf{Khảo sát và Phân tích:} Khảo sát thực trạng và các mô hình Chatbot hỗ trợ học tập hiện có. Nghiên cứu chuyên sâu về kiến trúc RAG và các kỹ thuật liên quan (Chunking, Vector Database, Prompt Engineering).
+  \item \textbf{Lập kế hoạch:} Thiết lập quy trình Agile Scrum trên Jira, phân công nhiệm vụ, ước lượng thời gian và xác định rủi ro.
+  \item \textbf{Thiết kế:} Thiết kế kiến trúc tổng thể, vẽ các biểu đồ UML (Use Case, Class Diagram, Activity, State Machine, Flowchart), thiết kế CSDL.
+  \item \textbf{Triển khai:} Lập trình Backend FastAPI, tích hợp ChromaDB và LLM API; lập trình Frontend ReactJS.
+  \item \textbf{Kiểm thử:} Xây dựng bộ test, kiểm thử chức năng và chạy Benchmark đánh giá hiệu năng theo chuẩn RAGAS.
+  \item \textbf{Tổng kết:} Tổng hợp số liệu, phân tích kết quả và hoàn thiện tài liệu báo cáo.
+\end{enumerate}
+
+\section{Cấu trúc Báo cáo}
+
+Tài liệu báo cáo đồ án được tổ chức theo chuẩn SWP/SWR/SWD/SWT như sau:
+
+\begin{table}[H]
+  \centering
+  \caption{Cấu trúc báo cáo}
+  \label{tab:structure}
+  \renewcommand{\arraystretch}{1.4}
+  \begin{tabularx}{\textwidth}{|c|l|X|}
+    \hline
+    \rowcolor{blue!15}
+    \textbf{Chương} & \textbf{Tiêu đề} & \textbf{Nội dung} \\
+    \hline
+    I & Giới thiệu Dự án & Bối cảnh, mục tiêu, phạm vi, đối tượng người dùng. \\
+    \hline
+    II & SWP -- Kế hoạch Quản lý Dự án & Phạm vi, ước lượng, rủi ro, Sprint, phân công, GitHub. \\
+    \hline
+    III & SWR -- Đặc tả Yêu cầu Phần mềm & Context Diagram, Use Case, Functional/Non-Functional Requirements, Business Rules. \\
+    \hline
+    IV & SWD -- Thiết kế Phần mềm & Kiến trúc, Database Design, Use Case chi tiết, Class Diagram, State Machine, Flowchart, Activity Diagram. \\
+    \hline
+    V & SWT -- Tài liệu Kiểm thử & Phạm vi, chiến lược, Test Cases, Benchmark RAGAS, báo cáo kết quả. \\
+    \hline
+    VI & Kết luận và Hướng phát triển & Kết quả đạt được, ưu/nhược điểm, hướng phát triển tương lai. \\
+    \hline
+  \end{tabularx}
+\end{table}
+
+\section{Cơ sở Lý thuyết và Công nghệ Sử dụng}
+
+\subsection{Retrieval-Augmented Generation (RAG)}
+
+Retrieval-Augmented Generation là kiến trúc tiên tiến kết hợp sức mạnh của hệ thống truy xuất thông tin (Information Retrieval) và khả năng sinh văn bản của LLM. Thay vì chỉ dựa vào kiến thức tiền huấn luyện tĩnh, RAG cho phép hệ thống chủ động tìm kiếm và trích xuất tài liệu liên quan từ cơ sở dữ liệu động trước khi gửi ngữ cảnh vào mô hình AI.
+
+Quy trình RAG gồm 3 giai đoạn chính:
+\begin{itemize}[itemsep=3pt]
+  \item \textbf{Indexing (Lập chỉ mục):} Tài liệu được đọc, phân mảnh (Chunking) và chuyển thành Vector Embedding, lưu vào ChromaDB.
+  \item \textbf{Retrieval (Truy xuất):} Câu hỏi của người dùng được mã hóa thành Vector, tìm kiếm các đoạn văn bản tương đồng nhất bằng Cosine Similarity.
+  \item \textbf{Generation (Sinh kết quả):} Các đoạn văn bản trích xuất được ghép vào Prompt Template và gửi đến LLM để sinh câu trả lời cuối cùng.
+\end{itemize}
+
+\subsection{Vector Database -- ChromaDB}
+
+ChromaDB là hệ quản trị cơ sở dữ liệu Vector mã nguồn mở, được thiết kế chuyên biệt để lưu trữ và truy vấn tốc độ cao các dữ liệu Embedding. Trong hệ thống, ChromaDB đóng vai trò bộ nhớ dài hạn, lưu trữ hàng triệu Vector sinh ra từ tài liệu và thực hiện tìm kiếm tương đồng (Similarity Search) với độ trễ thấp.
+
+\subsection{Backend -- FastAPI}
+
+FastAPI là Web Framework hiện đại, hiệu năng cao cho Python. Nổi bật với hỗ trợ lập trình bất đồng bộ (Async), tự động sinh tài liệu API (Swagger/Redoc), và tương thích cao với các thư viện AI/ML.
+
+\subsection{Frontend -- ReactJS}
+
+ReactJS là thư viện JavaScript mã nguồn mở của Meta, xây dựng giao diện theo hướng Component. Cơ chế Virtual DOM giúp cập nhật và hiển thị dữ liệu theo thời gian thực vô cùng mượt mà.
+
+\subsection{Tiêu chuẩn Đánh giá -- RAGAS}
+
+RAGAS (Retrieval Augmented Generation Assessment) là bộ tiêu chuẩn đánh giá chất lượng hệ thống RAG với 4 chỉ số chính:
+\begin{itemize}[itemsep=3pt]
+  \item \textbf{Accuracy (Độ chính xác):} Tỷ lệ câu trả lời đúng so với đáp án chuẩn.
+  \item \textbf{Relevancy (Độ bám sát):} Câu trả lời có giải quyết đúng trọng tâm câu hỏi.
+  \item \textbf{Faithfulness (Độ trung thực):} Tỷ lệ thông tin được trích xuất hoàn toàn từ tài liệu nguồn.
+  \item \textbf{Latency (Độ trễ):} Thời gian trung bình xử lý toàn bộ chu trình RAG.
+\end{itemize}
