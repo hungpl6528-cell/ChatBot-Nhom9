@@ -1,6 +1,8 @@
 # Báo Cáo Tổng Kết Đồ Án: Hệ Thống ChatBot Học Tập Nhóm 9
 *(Tích hợp RAG & Benchmarking so sánh Chunking Strategies & Embedding Models)*
 
+![Giao diện Tổng quan trang chủ](doc/BaoCaoLaTex/images/ui_home.png)
+
 ## Thành viên Nhóm 9
 1. **Phan Liên Hưng (LEADER)** - MSSV: 034206016528
 2. **Nguyễn Ninh Công Danh** - MSSV: 079205006602
@@ -87,8 +89,6 @@ Dữ liệu test (`testset.json`) chứa 50+ câu hỏi và ground truth. Hệ t
 ## 4. Quá Trình Kiểm Thử & Đánh Giá
 
 ### 4.1 Kiểm thử các chức năng chính
-- **Giao diện chính trang chủ :** 
-  - ![Giao diện trang chủ](doc/BaoCaoLaTex/images/ui_home.png)
 - **Upload Tài liệu:** Kéo thả file PDF, hệ thống phân tách thành công các chunks và lưu vector. 
   - ![Upload tài liệu](doc/BaoCaoLaTex/images/test%20chatbot/test_2.jpg)
 - **Tương tác Chatbot:** Đặt câu hỏi về nội dung vừa upload, chatbot phản hồi đúng trọng tâm, trích dẫn chuẩn xác trang/văn bản nguồn. 
