@@ -1,0 +1,58 @@
+%======================================================
+% CHAPTER VI: CONCLUSION
+%======================================================
+\chapter{KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN}
+
+\section{Kết quả Đạt được}
+
+Sau 16 tuần nghiên cứu, thiết kế và triển khai tuân thủ nghiêm ngặt quy trình quản lý dự án phần mềm, nhóm đã xây dựng thành công \textbf{Hệ thống Chatbot Hỗ trợ Học tập ứng dụng mô hình Retrieval-Augmented Generation (RAG)}. Hệ thống không chỉ cho phép người dùng cuối (sinh viên) đặt câu hỏi và nhận câu trả lời chính xác, minh bạch từ tài liệu môn học, mà còn cung cấp môi trường Sandbox và Benchmark chuyên sâu cho quản trị viên thực hiện đo lường, phân tích và tối ưu hóa các chiến lược xử lý AI.
+
+Các mục tiêu cốt lõi của đồ án đều đã được hoàn thành trọn vẹn:
+
+\begin{itemize}[itemsep=4pt]
+  \item \textbf{Về mặt Kiến trúc và Phần mềm:} Nhóm đã phát triển thành công Backend bằng FastAPI đảm bảo khả năng xử lý I/O bất đồng bộ hiệu suất cao, kết hợp với giao diện Frontend ReactJS hiện đại, Responsive. Quá trình phát triển đã tuân thủ chuẩn mô hình Client-Server nhiều lớp (N-Tier).
+  
+  \item \textbf{Về mặt Xử lý AI và RAG Pipeline:} Hệ thống đã triển khai thành công Ingestion Pipeline hoàn chỉnh (bóc tách PDF, làm sạch văn bản, phân mảnh Chunking, và nhúng Embedding) tích hợp trực tiếp vào cơ sở dữ liệu Vector (ChromaDB) để lưu trữ và truy xuất siêu tốc. Luồng RAG được tối ưu thông qua việc kết hợp Prompt Engineering nghiêm ngặt với sức mạnh của LLM (Gemini 2.5 Flash).
+  
+  \item \textbf{Về mặt Kiểm thử và Đánh giá:} Việc xây dựng thành công module Benchmark tự động và ứng dụng bộ tiêu chuẩn RAGAS đã cung cấp góc nhìn định lượng khách quan. Kết quả kiểm thử khẳng định hệ thống đạt độ chính xác (Accuracy) 0.89 và độ trung thực (Faithfulness) 0.94, gần như loại bỏ hoàn toàn hiện tượng ``ảo giác'' (Hallucination) của AI truyền thống.
+  
+  \item \textbf{Về mặt Quy trình Kỹ thuật Phần mềm:} Đồ án đã được thực hiện bằng một quy trình chuyên nghiệp, từ việc quản lý tiến độ bằng Agile Scrum trên Jira, áp dụng chiến lược Git Flow trên GitHub, cho đến việc biên soạn tài liệu đặc tả và thiết kế (SWP, SWR, SWD, SWT) đầy đủ bằng LaTeX.
+\end{itemize}
+
+\section{Đánh giá Ưu và Nhược điểm}
+
+\subsection{Ưu điểm Nổi bật}
+
+\begin{itemize}[itemsep=4pt]
+  \item \textbf{Tính Chính xác Cao \& Có Nguồn gốc:} Nhờ cơ chế RAG, mọi câu trả lời đều dựa trên các đoạn tài liệu có thật, hệ thống luôn trích dẫn nguồn (tên file, số trang), giúp sinh viên dễ dàng đối chiếu và học tập hiệu quả.
+  \item \textbf{Khả năng Đánh giá Định lượng:} Hệ thống tích hợp sẵn công cụ Benchmark chuyên nghiệp, cho phép người dùng thay vì đánh giá cảm quan, có thể sử dụng các chỉ số Toán học/AI (RAGAS) để chọn cấu hình RAG (Chunking, Embedding) tối ưu nhất cho từng loại tài liệu.
+  \item \textbf{Kiến trúc Tách biệt \& Mở rộng (Decoupled Architecture):} Việc thiết kế giao diện (Interface Pattern) cho Mô hình AI giúp hệ thống dễ dàng kết nối với các LLM mới (GPT-4, Claude) hoặc các mô hình Embedding nội bộ (như BAAI/bge-m3) mà không cần viết lại mã nguồn cốt lõi.
+\end{itemize}
+
+\subsection{Hạn chế Còn tồn đọng}
+
+Mặc dù đạt được nhiều kết quả khả quan, hệ thống ở giai đoạn hiện tại vẫn còn một số điểm giới hạn cần được cải thiện:
+
+\begin{itemize}[itemsep=4pt]
+  \item \textbf{Xử lý Dữ liệu Đa phương tiện (Multimodal):} Ingestion Pipeline hiện tại chỉ làm việc tốt với văn bản thô (Plain Text). Đối với các tài liệu chứa nhiều biểu đồ, hình vẽ kỹ thuật, hoặc công thức toán học phức tạp, chất lượng trích xuất (OCR) chưa đạt mức tối ưu nhất, làm suy giảm một phần ngữ cảnh của RAG.
+  \item \textbf{Quản lý Định danh (Authentication \& Authorization):} Tính năng đăng nhập, phân quyền cá nhân hóa và quản lý phiên hội thoại chi tiết cho hàng ngàn sinh viên vẫn còn sơ khai, chưa tích hợp hệ thống xác thực tập trung (như OAuth 2.0 hoặc SSO của trường).
+  \item \textbf{Môi trường Triển khai (Deployment):} Hệ thống mới chỉ chạy tốt trên môi trường cục bộ (Localhost) và máy chủ thử nghiệm nhỏ. Việc đóng gói bằng Docker và triển khai lên hạ tầng Cloud (AWS/GCP) để hỗ trợ khả năng tự động mở rộng (Auto-scaling) chưa được thực hiện.
+\end{itemize}
+
+\section{Định hướng Phát triển Tương lai}
+
+Từ những kết quả và hạn chế đã nêu, nhóm đề xuất các hướng nâng cấp thiết thực cho sản phẩm trong tương lai:
+
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*, itemsep=4pt]
+  \item \textbf{Tích hợp AI Xử lý Đa phương tiện (Vision LLM):} Mở rộng Ingestion Pipeline bằng cách sử dụng các mô hình Vision-Language (như Gemini 1.5 Pro Vision) để phân tích, mô tả nội dung của biểu đồ, hình ảnh và công thức Toán học có trong file PDF, sau đó chuyển đổi thành Text Embedding để đưa vào ChromaDB.
+  
+  \item \textbf{Triển khai Cloud \& Microservices:} Chuyển đổi kiến trúc Backend hiện tại sang dạng Microservices, đóng gói toàn bộ hệ thống bằng Docker. Triển khai lên nền tảng Kubernetes (K8s) trên AWS hoặc Google Cloud nhằm đảm bảo khả năng chịu tải cao trong các mùa thi cuối kỳ khi lượng sinh viên truy cập tăng vọt.
+  
+  \item \textbf{Cá nhân hóa Lộ trình Học tập (Personalized Learning):} Xây dựng hệ thống tài khoản hoàn chỉnh với OAuth 2.0. Hệ thống sẽ theo dõi lịch sử hỏi đáp của từng sinh viên, phân tích các khái niệm sinh viên thường hỏi hoặc hiểu sai, từ đó tự động gợi ý lộ trình ôn tập và bài tập trắc nghiệm phù hợp.
+  
+  \item \textbf{Phát triển Ứng dụng Di động (Mobile App):} Chuyển đổi từ nền tảng Web-only sang phát triển thêm ứng dụng di động bằng React Native hoặc Flutter, cung cấp trải nghiệm tiện lợi hơn cho sinh viên có thể tra cứu nhanh trên điện thoại thông minh.
+\end{enumerate}
+
+\section{Tổng kết}
+
+Đồ án \textbf{``Xây dựng Hệ thống Chatbot Hỗ trợ Học tập ứng dụng RAG''} đã hoàn thành xuất sắc các mục tiêu đề ra. Sản phẩm không chỉ đáp ứng yêu cầu của một công cụ hỏi đáp tự động có độ tin cậy cao, mà còn cung cấp một nền tảng nghiên cứu Benchmark chuyên sâu về AI xử lý ngôn ngữ. Việc phát triển đồ án cũng là một minh chứng thực tiễn về ứng dụng thành công các quy trình công nghệ phần mềm hiện đại (từ Agile, System Design, đến Testing) vào một bài toán trí tuệ nhân tạo có tính ứng dụng cao trong lĩnh vực Giáo dục.

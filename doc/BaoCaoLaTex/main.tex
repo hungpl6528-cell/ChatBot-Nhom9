@@ -1,18 +1,187 @@
-\documentclass{report}
+%======================================================
+% MAIN DOCUMENT - ChatBot RAG System Report
+% Template: SWP / SWR / SWD / SWT
+%======================================================
+\documentclass[12pt, a4paper]{report}
+
+%--- Encoding & Language ---
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese,english]{babel}
+
+%--- Page Layout ---
+\usepackage[
+  top=2.5cm,
+  bottom=2.5cm,
+  left=3cm,
+  right=2cm,
+  headheight=15pt
+]{geometry}
+
+%--- Graphics & Figures ---
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{caption}
+\usepackage{subcaption}
 
+%--- Tables ---
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{colortbl}
+
+%--- Colors ---
+\usepackage[table,xcdraw]{xcolor}
+
+%--- Lists ---
+\usepackage{enumitem}
+
+%--- Math ---
+\usepackage{amsmath}
+
+%--- Code Listing ---
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{green!60!black},
+  stringstyle=\color{orange},
+  backgroundcolor=\color{gray!5},
+  tabsize=2
+}
+
+%--- Header & Footer ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\leftmark}
+\fancyhead[R]{\small\thepage}
+\fancyfoot[C]{\small Trường Đại học Giao thông Vận tải -- Khoa CNTT}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+%--- Hyperlinks ---
+\usepackage[
+  colorlinks=true,
+  linkcolor=blue!70!black,
+  citecolor=green!60!black,
+  urlcolor=blue,
+  pdftitle={Báo cáo Đồ án - Xây dựng Hệ thống Chatbot RAG},
+  pdfauthor={Nhóm 9},
+  pdfsubject={Công nghệ Phần mềm},
+  bookmarks=true,
+  bookmarksopen=true
+]{hyperref}
+
+%--- Line Spacing ---
+\usepackage{setspace}
+\onehalfspacing
+
+%--- Font ---
+\usepackage{lmodern}
+
+%--- Title formatting ---
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\Large\centering}
+  {\MakeUppercase{\chaptertitlename}\ \thechapter}
+  {8pt}
+  {\Large\MakeUppercase}
+\titlespacing*{\chapter}{0pt}{0pt}{20pt}
+
+\titleformat{\section}{\normalfont\bfseries\large}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\bfseries\normalsize}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\bfseries\normalsize}{\thesubsubsection}{1em}{}
+
+%--- TOC depth ---
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+%--- Custom environments ---
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+
+% Box for function specification
+\newtcolorbox{funcbox}[1][]{
+  enhanced,
+  breakable,
+  colback=blue!3!white,
+  colframe=blue!50!black,
+  fonttitle=\bfseries,
+  title={#1},
+  left=6pt, right=6pt, top=4pt, bottom=4pt,
+}
+
+% Box for business rules
+\newtcolorbox{rulebox}[1][]{
+  enhanced,
+  breakable,
+  colback=orange!5!white,
+  colframe=orange!70!black,
+  fonttitle=\bfseries,
+  title={#1},
+  left=6pt, right=6pt, top=4pt, bottom=4pt,
+}
+
+%--- TikZ for diagrams ---
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, calc}
+
+%--- Misc ---
+\usepackage{pdfpages}
+\usepackage{microtype}
+\usepackage{csquotes}
+
+%======================================================
 \begin{document}
-	\input{chapters/00_Bia}
-	\input{chapters/01_LoiCamOn}
-	\input{chapters/02_GioiThieu}
-	\input{chapters/03_CongNghe}
-	\input{chapters/04_SRS}
-	\input{chapters/05_ThietKe}
-	\input{chapters/06_TrienKhai}
-	\input{chapters/07_KiemThu}
-	\input{chapters/08_JiraGit}
-	\input{chapters/09_KetLuan}
-	\input{chapters/10_PhuLuc}
+
+%--- Title Page ---
+\input{chapters/00_Bia}
+
+%--- Front Matter ---
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\input{chapters/01_LoiCamOn}
+
+\tableofcontents
+\newpage
+\listoffigures
+\newpage
+\listoftables
+\newpage
+
+%--- Main Content ---
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% Chapter I: Project Introduction
+\input{chapters/02_GioiThieu}
+
+% Chapter II: SWP - Software Project Management Plan
+\input{chapters/03_SWP}
+
+% Chapter III: SWR - Software Requirements Specification
+\input{chapters/04_SWR}
+
+% Chapter IV: SWD - Software Design Description
+\input{chapters/05_SWD}
+
+% Chapter V: SWT - Software Testing Documentation
+\input{chapters/06_SWT}
+
+% Chapter VI: Conclusion
+\input{chapters/07_KetLuan}
+
+%--- Bibliography ---
+\bibliographystyle{plain}
+\bibliography{references}
+
 \end{document}
