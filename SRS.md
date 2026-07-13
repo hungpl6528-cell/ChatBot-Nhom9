@@ -44,7 +44,7 @@ Cơ sở dữ liệu lưu trữ 6 thực thể chính: `Users` (Người dùng),
 ---
 
 ### 5. Biểu đồ Hoạt động Tổng Quan (Activity Diagram)
-![Biểu đồ Hoạt động](doc/BaoCaoLaTex/images/SRS/active diagram.png)
+![Biểu đồ Hoạt động](doc/BaoCaoLaTex/images/SRS/active%20diagram.png)
 
 **Giải thích luồng hoạt động:**
 Biểu đồ hoạt động tổng quan mô tả toàn bộ vòng đời tương tác trong hệ thống từ hai phía người dùng:
